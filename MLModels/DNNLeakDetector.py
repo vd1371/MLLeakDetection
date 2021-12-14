@@ -88,71 +88,14 @@ class DNNLeakDetector:
 		
 		return X_train, X_test, Y_train, Y_test
 
-
-
 	def _get_call_backs(self):
-		call_back_list = []
-		if self.should_checkpoint:
-			model_path = f"../models/weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5"
-			checkpoint = ModelCheckpoint(model_path, 
-										 monitor = 'val_acc',
-										 verbose = 1,
-										 save_best_only = True,
-										 mode = 'max')
-			call_back_list.append(checkpoint)
-
-		if self.should_early_stop:
-			early_stop = EarlyStopping(monitor = 'val_loss',
-									   patience = self.patience,
-									   verbose = 1)
-			call_back_list.append(early_stop)
-
-		return call_back_list
+		return _get_call_backs(*args, **kwargs)
 
 	def log_hyperparameters(self):
-		self.log.info(pprint.pformat({'layers': self.layers,
-									'input_activation_func': self.input_activation_func,
-									'hidden_activation_func': self.hidden_activation_func,
-									'final_activation_func': self.final_activation_func,
-									'loss_func': self.loss_func,
-									'epochs': self.epochs,
-									'min_delta': self.min_delta,
-									'patience': self.patience,
-									'batch_size': self.batch_size,
-									'should_early_stop': self.should_early_stop,
-									'should_checkpoint': self.should_checkpoint,
-									'regul_type': self.regul_type,
-									'act_regul_type': self.act_regul_type,
-									'reg_param': self.reg_param,
-									'dropout': self.dropout,
-									'optimizer': self.optimizer,
-									'random_state': self.random_state,
-									'split_size': self.split_size}))
+		return log_hyperparameters(*args, **kwargs)
 
 	def _construct_model(self):
-
-		self.log_hyperparameters()
-
-		model = Sequential()
-		model.add(Dense(self.layers[0],
-						input_shape = (self.input_dim,),
-						activation = self.input_activation_func,
-						kernel_regularizer = self.l(self.reg_param),
-						activity_regularizer = self.actl(self.reg_param)))
-		for ind in range(1,len(self.layers) + 1):
-			model.add(Dense(self.layers[ind],
-							activation = self.hidden_activation_func,
-							kernel_regularizer = self.l(self.reg_param),
-							activity_regularizer = self.actl(self.reg_param)))
-			model.add(Dropout(self.dropout))
-		model.add(Dense(self.output_dim, activation = self.final_activation_func))
-		 
-		# Compile model
-		model.compile(loss=self.loss_func,
-						optimizer=self.optimizer,
-						metrics = ['accuracy'])
-
-		return model
+		return _construct_model(*args, **kwargs)
 
 	def load_model(self):
 		
