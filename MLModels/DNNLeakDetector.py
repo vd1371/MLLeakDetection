@@ -39,37 +39,37 @@ class DNNLeakDetector:
 	def __init__(self, **params):
 
 		self.layers = params.get("layers")
-		self.input_activation_func = params.get("input_activation_func", "tanh")
-		self.hidden_activation_func = params.get("hidden_activation_func", "relu")
-		self.final_activation_func = params.get("final_activation_func", "softmax")
-		self.loss_func = params.get("loss_func", "categorical_crossentropy")
-		self.epochs = params.get("epochs", 500)
-		self.min_delta = params.get("min_delta", 0.00001)
-		self.patience = params.get("patience", 10)
-		self.batch_size = params.get("batch_size", 32)
-		self.should_early_stop = params.get("should_early_stop", False)
-		self.should_checkpoint = params.get("should_checkpoint", False)
+		self.input_activation_func = params.get("input_activation_func")
+		self.hidden_activation_func = params.get("hidden_activation_func")
+		self.final_activation_func = params.get("final_activation_func")
+		self.loss_func = params.get("loss_func")
+		self.epochs = params.get("epochs")
+		self.min_delta = params.get("min_delta")
+		self.patience = params.get("patience")
+		self.batch_size = params.get("batch_size")
+		self.should_early_stop = params.get("should_early_stop")
+		self.should_checkpoint = params.get("should_checkpoint")
 	
-		self.regul_type = params.get("regul_type", "l2")
-		self.act_regul_type = params.get("act_regul_type", "l1")
+		self.regul_type = params.get("regul_type")
+		self.act_regul_type = params.get("act_regul_type")
 		self.l = l2 if self.regul_type == 'l2' else l1
 		self.actl = l1 if self.act_regul_type == 'l1' else l2
-		self.reg_param = params.get("reg_param", 0.01)
-		self.dropout = params.get("dropout", 0.2)
-		self.optimizer = params.get("optimizer", "adam")
-		self.random_state = params.get("random_state", 165)
+		self.reg_param = params.get("reg_param")
+		self.dropout = params.get("dropout")
+		self.optimizer = params.get("optimizer")
+		self.random_state = params.get("random_state")
 
-		self.split_size = params.get("split_size", 0.2)
+		self.split_size = params.get("split_size")
 
 		self.data_directory = params.get("data_directory")
-		self.directory = "./Reports/DNN"
+		self.directory = params.get("directory")
 		self.log = Logger(address = f"{self.directory}/Log.log")
 		# self.log = logging.getLogger()
 		# self.log.basicConfig(filename = f"{self.directory}/Log.log", filemode = 'w')
-		self.input_dim = 50
-		self.output_dim = 40
+		self.input_dim = params.get("input_dim")
+		self.output_dim = params.get("output_dim")
 
-		self.df = df
+		# self.df = df
 
 	def get_data(self, *args, **kwargs):
 		return get_data(*args, **kwargs)

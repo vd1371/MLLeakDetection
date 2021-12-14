@@ -4,14 +4,31 @@ from utils import *
 
 def run():
 
-	settings = {
-		layers = [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
-		data_directory = "Data/",
-		
-	}
+	params = {'layers' : [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+			  'input_activation_func' : 'tanh',
+			  'hidden_activation_func' : 'relu',
+			  'final_activation_func' : 'softmax',
+			  'loss_func' : 'categorical_crossentropy',
+			  'epochs' : 500,
+			  'min_delta' : 0.00001,
+			  'patience' : 10,
+		      'batch_size' : 32,
+			  'should_early_stop' : False,
+			  'should_checkpoint' : False,
+		      'regul_type' : 'l2',
+			  'act_regul_type' : 'l1',
+			  'reg_param' : 0.01,
+			  'dropout' : 0.2,
+			  'optimizer' : 'adam',
+			  'random_state' : 165,
+			  'split_size' : 0.2,
+			  'data_directory' : './Data/',
+			  'directory' : './Reports/DNN/',
+			  'input_dim' : 50,
+			  'output_dim' : 40}
 
-	myDNNLeakDetectpr = DNNLeakDetector(**settings)
-	myDNNLeakDetectpr.run()
+	myDNNLeakDetector = DNNLeakDetector(**params)
+	myDNNLeakDetector.run()
 
 	# features = generate_random_features()
 	# print (h_d_measure(features))
