@@ -7,10 +7,10 @@ from sklearn.metrics import accuracy_score
 def evaluate_classification(*args, **params):
     '''Report classification results
     
-    *args should be lists of [label, x, y, inds]
+    *args should be lists of [label,x , y, inds]
     '''
 
-    direc = params.pop('direc')
+    # direc = params.pop('direc')
     model = params.pop('model', None)
     model_name = params.pop('model_name')
     logger = params.pop('logger')

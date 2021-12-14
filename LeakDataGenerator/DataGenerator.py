@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import time 
 
-from LeakWave import h_d_measure
+from LeakDataGenerator import _h_d_measure
 
 
 from multiprocessing import Queue, Process

@@ -25,7 +25,7 @@ def generate_random_features(random_location = True,
 		xL = list(np.array([0.8, 0.6, 0.25])*L)
 
 	if random_size:
-		CdAl = np.random.random(max_n_leaks)
+		CdAl = np.random.exponential(0.2,max_n_leaks)
 	else:
 		CdAl = np.array([0.01, 0.01, 0.01])
 
