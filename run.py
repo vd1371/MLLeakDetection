@@ -4,6 +4,15 @@ from utils import *
 
 def run():
 
+	settings = {
+		layers = [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+		data_directory = "Data/",
+		
+	}
+
+	myDNNLeakDetectpr = DNNLeakDetector(**settings)
+	myDNNLeakDetectpr.run()
+
 	# features = generate_random_features()
 	# print (h_d_measure(features))
 

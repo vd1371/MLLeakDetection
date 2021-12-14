@@ -26,8 +26,8 @@ from RegressionReport import evaluate_regression
 from ClassificationReport import evaluate_classification
 
 from LeakWave import h_d_measure
-# from Logger import Logger
-import logging
+from utils import Logger
+# import logging
 
 import os
 import requests
@@ -38,76 +38,42 @@ class DNNLeakDetector:
 	
 	def __init__(self, **params):
 
-		self.layers = params.pop("layers", [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000])
-		self.input_activation_func = params.pop("input_activation_func", "tanh") #converts input between -1 and 1, we can use 'relu' too
-		self.hidden_activation_func = params.pop("hidden_activation_func", "relu")
-		self.final_activation_func = params.pop("final_activation_func", "softmax")
-		self.loss_func = params.pop("loss_func", "categorical_crossentropy")
-		self.epochs = params.pop("epochs", 500)
-		self.min_delta = params.pop("min_delta", 0.00001)
-		self.patience = params.pop("patience", 10)
-		self.batch_size = params.pop("batch_size", 32)
-		self.should_early_stop = params.pop("should_early_stop", False)
-		self.should_checkpoint = params.pop("should_checkpoint", False)
+		self.layers = params.get("layers")
+		self.input_activation_func = params.get("input_activation_func", "tanh")
+		self.hidden_activation_func = params.get("hidden_activation_func", "relu")
+		self.final_activation_func = params.get("final_activation_func", "softmax")
+		self.loss_func = params.get("loss_func", "categorical_crossentropy")
+		self.epochs = params.get("epochs", 500)
+		self.min_delta = params.get("min_delta", 0.00001)
+		self.patience = params.get("patience", 10)
+		self.batch_size = params.get("batch_size", 32)
+		self.should_early_stop = params.get("should_early_stop", False)
+		self.should_checkpoint = params.get("should_checkpoint", False)
 	
-		self.regul_type = params.pop("regul_type", "l2")
-		self.act_regul_type = params.pop("act_regul_type", "l1")
+		self.regul_type = params.get("regul_type", "l2")
+		self.act_regul_type = params.get("act_regul_type", "l1")
 		self.l = l2 if self.regul_type == 'l2' else l1
 		self.actl = l1 if self.act_regul_type == 'l1' else l2
-		self.reg_param = params.pop("reg_param", 0.01)
-		self.dropout = params.pop("dropout", 0.2)
-		self.optimizer = params.pop("optimizer", "adam")
-		self.random_state = params.pop("random_state", 165)
+		self.reg_param = params.get("reg_param", 0.01)
+		self.dropout = params.get("dropout", 0.2)
+		self.optimizer = params.get("optimizer", "adam")
+		self.random_state = params.get("random_state", 165)
 
-		self.split_size = params.pop("split_size", 0.2)
+		self.split_size = params.get("split_size", 0.2)
 
-		self.data_directory = "./Data/" #or '../Data/': depends on where (in which folder) we're training the neural network 
+		self.data_directory = params.get("data_directory")
 		self.directory = "./Reports/DNN"
-		# self.log = Logger(address = f"{self.directory}/Log.log")
-		self.log = logging.getLogger()
-		self.log.basicConfig(filename = f"{self.directory}/Log.log", filemode = 'w')
+		self.log = Logger(address = f"{self.directory}/Log.log")
+		# self.log = logging.getLogger()
+		# self.log.basicConfig(filename = f"{self.directory}/Log.log", filemode = 'w')
 		self.input_dim = 50
 		self.output_dim = 40
 
 		self.df = df
 
-	# def get_data(self, batch_number):
+	def get_data(self, *args, **kwargs):
+		return get_data(*args, **kwargs)
 
-	# 	downloaded = False
-	# 	while not downloaded:
-	# 		x = requests.get(f"http://158.132.126.58:8000/?batch_number={batch_number}").content.decode("utf-8")
-
-	# 		if "NotFound" in x:
-	# 			input("The data was not found. Make sure everything is alright")
-	# 		else:
-	# 			data = pd.read_csv(io.StringIO(x), header = 0, index_col = 0)
-	# 			downloaded = True
-	# 			print (batch_number, "is downloaded from server") 
-
-	# 	X, Y, dates = data.iloc[:, :-3], data.iloc[:, -3:], data.index
-
-	# 	X_train, X_test, Y_train, Y_test, \
-	# 		dates_train, dates_test = train_test_split(X, Y, dates,
-	# 													test_size = self.split_size,
-	# 													shuffle = True,
-	# 													random_state = self.random_state)
-
-	# 	return X_train, X_test, Y_train, Y_test, dates_train, dates_test
-
-	def get_data(self,batch_number):
-		data = pd.read_csv(os.path.join(self.data_directory, f"LeakLocs-{batch_number}.csv") , header = 0, index_col = 0)
-		
-		X, Y = data.iloc[:, 1:-40], data.iloc[:, -40:]
-		X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = self.split_size, shuffle = True, 
-													random_state = self.random_state)
-
-		scaler = StandardScaler()
-		X_train = pd.DataFrame(scaler.fit_transform(X_train), columns = X_train.columns)
-		X_test = pd.DataFrame(scaler.fit_transform(X_test), columns = X_test.columns)
-
-		print (batch_number, "is read from the file")
-		
-		return X_train, X_test, Y_train, Y_test	
 
 	def get_data_prim(self,dataframe):
 		X, Y = dataframe.iloc[:, 1:-40], dataframe.iloc[:, -40:]
@@ -120,20 +86,9 @@ class DNNLeakDetector:
 
 		print (batch_number, "is read from the file")
 		
-		return X_train, X_test, Y_train, Y_test	
+		return X_train, X_test, Y_train, Y_test
 
-	# def _get_call_backs(self):
-	# 	# Creating Early Stopping function and other callbacks
-	# 	call_back_list = []
-	# 	if self.should_checkpoint:
-	# 		checkpoint = ModelCheckpoint(f'{self.directory}/BestModel.h5',
-	# 											monitor='val_loss',
-	# 											verbose=1,
-	# 											save_best_only=True,
-	# 											mode='auto')
-	# 		call_back_list.append(checkpoint)
 
-	# 	return call_back_list
 
 	def _get_call_backs(self):
 		call_back_list = []
@@ -343,7 +298,20 @@ class DNNLeakDetector:
 			print ("----------------------------------------------------------")
 
 			evaluate_classification(['label', X_train, Y_train, ])
-		
+
+
+'''
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = self.split_size, shuffle = True, 
+												random_state = self.random_state)
+
+	scaler = StandardScaler()
+	X_train = pd.DataFrame(scaler.fit_transform(X_train), columns = X_train.columns)
+	X_test = pd.DataFrame(scaler.fit_transform(X_test), columns = X_test.columns)
+
+	print (batch_number, "is read from the file")
+	
+	return X_train, X_test, Y_train, Y_test	
+'''
 		
 
 if __name__ == "__main__":
