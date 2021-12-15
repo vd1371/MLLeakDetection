@@ -1,4 +1,12 @@
 #Loading dependencies
+from ._get_data import get_data
+from ._get_call_backs import _get_call_backs
+from .log_hyperparameters import log_hyperparameters
+from ._construct_model import _construct_model
+from ._load_model import load_model
+from ._save_model import save_model
+from .run import run
+
 import numpy as np
 import pandas as pd
 import time
@@ -69,26 +77,29 @@ class DNNLeakDetector:
 		self.input_dim = params.get("input_dim")
 		self.output_dim = params.get("output_dim")
 
+		self.n_rounds = params.get("n_rounds")
+		self.warm_up = params.get("warm_up")
+		self.starting_batch = params.get("starting_batch")
 
 	def get_data(self, *args, **kwargs):
 		return get_data(*args, **kwargs)
 
-	def _get_call_backs(self):
+	def _get_call_backs(self, *args, **kwargs):
 		return _get_call_backs(*args, **kwargs)
 
-	def log_hyperparameters(self):
+	def log_hyperparameters(self, *args, **kwargs):
 		return log_hyperparameters(*args, **kwargs)
 
-	def _construct_model(self):
+	def _construct_model(self, *args, **kwargs):
 		return _construct_model(*args, **kwargs)
 
-	def load_model(self):
+	def load_model(self, *args, **kwargs):
 		return _load_model(*args, **kwargs)
 
-	def save_model(self):
+	def save_model(self, *args, **kwargs):
 		return _save_model(*args, **kwargs)
 
-	def run(self, n_rounds = 1000, warm_up = False, starting_batch = 0):
+	def run(self, *args, **kwargs):
 		return run(*args, **kwargs)
 
 if __name__ == "__main__":
