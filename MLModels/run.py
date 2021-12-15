@@ -2,6 +2,7 @@ from ._load_model import load_model
 from ._construct_model import _construct_model
 from ._get_call_backs import _get_call_backs
 from ._split_and_normalize_data import split_and_normalize_data
+from ._save_model import save_model
 
 from utils import Logger
 from ClassificationReport import evaluate_classification
@@ -14,7 +15,10 @@ def run(*args, **kwargs):
 	
 	warm_up = kwargs.get('warm_up')
 	starting_batch = kwargs.get('starting_batch')
-	
+	split_size = kwargs.get('split_size')
+	epochs = kwargs.get('epochs')
+	batch_size = kwargs.get('batch_size')
+
 	log = Logger(address = f"{self.directory}/Log.log")
 	
 	constructed = False
@@ -52,9 +56,9 @@ def run(*args, **kwargs):
 
 		print ("Trying to fit to the new generated data...")
 		model.fit(X_train, Y_train,
-				  validation_data=(X_test.values, Y_test.values),
-				  epochs=self.epochs,
-				  batch_size=self.batch_size,
+				  validation_split=split_size,
+				  epochs=epochs,
+				  batch_size=batch_size,
 			      verbose = 2, 
 			      shuffle=True, 
 				  callbacks=call_back_list)
@@ -92,7 +96,7 @@ def run(*args, **kwargs):
 								model_name = f"{directory}/" + "SavedModel.h5", #this line should be modified, got model_name from model.save from _save_model.py
 								logger = 'logger',
 								model_name = f'DNN',
-								logger = self.log,
+								logger = log,
 								slicer = 1)
 
 		print ("----------------------------------------------------------")
