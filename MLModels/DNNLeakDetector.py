@@ -74,20 +74,6 @@ class DNNLeakDetector:
 	def get_data(self, *args, **kwargs):
 		return get_data(*args, **kwargs)
 
-
-	def get_data_prim(self,dataframe):
-		X, Y = dataframe.iloc[:, 1:-40], dataframe.iloc[:, -40:]
-		X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = self.split_size, shuffle = True, 
-													random_state = self.random_state)
-
-		scaler = StandardScaler()
-		X_train = pd.DataFrame(scaler.fit_transform(X_train), columns = X_train.columns)
-		X_test = pd.DataFrame(scaler.fit_transform(X_test), columns = X_test.columns)
-
-		print (batch_number, "is read from the file")
-		
-		return X_train, X_test, Y_train, Y_test
-
 	def _get_call_backs(self):
 		return _get_call_backs(*args, **kwargs)
 
@@ -98,14 +84,10 @@ class DNNLeakDetector:
 		return _construct_model(*args, **kwargs)
 
 	def load_model(self):
-		
-		# load json and create model
-		model_type = 'BestModel' if self.should_checkpoint else 'SavedModel'
-		self.model = load_model(self.directory + "/" +  f"{model_type}.h5")
+		return _load_model(*args, **kwargs)
 
 	def save_model(self):
-		save_address = f"{self.directory}/" 
-		self.model.save(save_address + "SavedModel.h5", save_format = 'h5')
+		return _save_model(*args, **kwargs)
 
 	def run(self, n_rounds = 1000, warm_up = False, starting_batch = 0):
 
