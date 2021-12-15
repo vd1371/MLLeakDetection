@@ -25,7 +25,10 @@ def run():
 			  'data_directory' : './Data/',
 			  'directory' : './Reports/DNN/',
 			  'input_dim' : 50,
-			  'output_dim' : 40}
+			  'output_dim' : 40,
+			  'n_rounds' : 1000,
+			  'warm_up' : False,
+			  'starting_batch' : 0}
 
 	myDNNLeakDetector = DNNLeakDetector(**params)
 	myDNNLeakDetector.run()

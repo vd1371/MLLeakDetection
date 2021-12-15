@@ -2,6 +2,7 @@ from .log_hyperparameters import log_hyperparameters
 from keras.layers import Dense
 from keras.layers import Dropout
 from keras.models import Sequential
+from keras.regularizers import l1, l2
 
 
 def _construct_model(*args, **kwargs):
