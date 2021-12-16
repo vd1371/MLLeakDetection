@@ -2,7 +2,7 @@ import logging as log
 from keras.regularizers import l1, l2
 import pprint
 
-def log_hyperparameters(*args, **kwargs):
+def _log_hyperparameters(**kwargs):
 	
 	layers = kwargs.get('layers')
 	input_activation_func = kwargs.get('input_activation_func')

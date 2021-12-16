@@ -1,6 +1,6 @@
 
 
-def get_data(batch_number):
+def get_data_online(batch_number):
 
 	return 
 

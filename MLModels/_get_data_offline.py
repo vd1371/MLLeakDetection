@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-def get_data(*args, **kwargs):
+def get_data_offline(*args, **kwargs):
 
 	data_directory = kwargs.get("data_directory")
 	batch_number = kwargs.get("batch_number")

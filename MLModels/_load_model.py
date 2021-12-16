@@ -1,6 +1,6 @@
 from keras.models import load_model
 
-def load_model(*args, **kwargs):
+def _load_model(*args, **kwargs):
 	
 	should_checkpoint = kwargs.get('should_checkpoint')
 	directory = kwargs.get('directory')

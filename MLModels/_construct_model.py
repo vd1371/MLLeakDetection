@@ -1,34 +1,27 @@
-from .log_hyperparameters import log_hyperparameters
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.models import Sequential
-from keras.regularizers import l1, l2
 
 
-def _construct_model(*args, **kwargs):
 
-	log_hyperparameters()
+def _construct_model(**params):
 
-	model = Sequential()
-	
-	model.add(Dense(layers[0],
-					input_shape = (input_dim,),
-					activation = input_activation_func,
-					kernel_regularizer = l(reg_param),
-					activity_regularizer = actl(reg_param)))
-	
-	for ind in range(1,len(layers) + 1):
-		model.add(Dense(layers[ind],
-						activation = hidden_activation_func,
-						kernel_regularizer = l(reg_param),
-						activity_regularizer = actl(reg_param)))
-		model.add(Dropout(dropout))
-	
-	model.add(Dense(output_dim, activation = final_activation_func))
-	 
-	# Compile model
-	model.compile(loss=loss_func,
-					optimizer=optimizer,
-					metrics = ['accuracy'])
+	riase ValueError("To MHK: Please complete this file")
+
+	constructed = False
+	if warm_up:
+		try:
+			load_model()
+			constructed = True
+			log.info("\n\n------------\nA trained model is loaded\n------------\n\n")
+		except OSError:
+			print ("The model is not trained before. No saved models found")
+
+	if not constructed:
+		# Creating the structure of the neural network
+		model = _construct_network(**params)
+		
+		# A summary of the model
+		stringlist = []
+		model.summary(print_fn=lambda x: stringlist.append(x))
+		short_model_summary = "\n".join(stringlist)
+		log.info(short_model_summary)
 
 	return model

@@ -1,10 +1,11 @@
 from LeakDataGenerator import *
+from MLModels import DNNLeakDetector
 from utils import *
 
 
 def run():
 
-	params = {'layers' : [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+	DNN_settings = {'layers' : [1000, ],
 			  'input_activation_func' : 'tanh',
 			  'hidden_activation_func' : 'relu',
 			  'final_activation_func' : 'softmax',
@@ -22,31 +23,22 @@ def run():
 			  'optimizer' : 'adam',
 			  'random_state' : 165,
 			  'split_size' : 0.2,
+			  'input_dim' : 50,
+			  'output_dim' : 40,}
+
+	modelling_settings = {
 			  'data_directory' : './Data/',
 			  'directory' : './Reports/DNN/',
-			  'input_dim' : 50,
-			  'output_dim' : 40,
 			  'n_rounds' : 1000,
 			  'warm_up' : False,
-			  'starting_batch' : 0}
+			  'starting_batch' : 0,
+			  'method': 'offline',
+			  'verbose': True,
+			  'modelling_type': 'LeakLocs'}
 
-	myDNNLeakDetector = DNNLeakDetector(**params)
+	myDNNLeakDetector = DNNLeakDetector(**{**DNN_settings,
+											**modelling_settings})
 	myDNNLeakDetector.run()
-
-	# features = generate_random_features()
-	# print (h_d_measure(features))
-
-	# plot_varying_location()
-
-	# samples = generate_batch_data(N = 100000)
-	# df = convert_samples_to_df(samples)
-	# df = clean_data(df)
-	# df_leak_locs, df_leak_size = convert_to_sections(df)
-
-	# convert_to_csv(df_leak_locs, df_leak_size, batch_number = 1000)
-
-
-
 
 
 if __name__ == "__main__":
