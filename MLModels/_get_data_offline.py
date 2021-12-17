@@ -12,5 +12,5 @@ def get_data_offline(*args, **kwargs):
 	data = pd.read_csv(address, index_col = 0)
 
 	X, Y = data.iloc[:, :-n_sections], data.iloc[:, -n_sections:]
-
+	print(type(X))
 	return X, Y

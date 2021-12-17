@@ -1,3 +1,4 @@
+from ._get_data import get_data
 from ._load_model import load_model
 from ._construct_model import _construct_model
 from ._get_call_backs import _get_call_backs
@@ -7,20 +8,25 @@ from .ClassificationReport import evaluate_classification
 
 from utils import Logger
 
-def TrainLeakLocs(model, **kwargs):
+def TrainLeakLocs(**kwargs): #def TrainLeakLocs(model, **kwargs)
 	
+	batch_number = kwargs.get('batch_number')
 	warm_up = kwargs.get('warm_up')
 	starting_batch = kwargs.get('starting_batch')
+	n_rounds = kwargs.get('n_rounds')
 	split_size = kwargs.get('split_size')
 	epochs = kwargs.get('epochs')
 	batch_size = kwargs.get('batch_size')
 	log = kwargs.get("log")
-	
+	model = kwargs.get('model')
+	verbose = kwargs.get('verbose')	
+
 	call_back_list = _get_call_backs()
 
 	for batch_number in range(starting_batch, n_rounds):
-
-		X, Y = get_data(**kwargs)
+		get_data()
+		raise ValueError
+		X, Y = get_data()
 		
 		X_train, X_test, Y_train, Y_test = split_and_normalize_data()
 

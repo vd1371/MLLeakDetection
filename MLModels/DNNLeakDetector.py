@@ -27,10 +27,12 @@ class DNNLeakDetector(BaseDNNLeakDetector):
 
 	def run(self, *args, **kwargs):		
 		if self.leak_pred == 'LeakLocs':
-			TrainLeakLocs(self.model, **self.__dict__)
+			# print(self.__dict__.get('model'))
+			# raise ValueError
+			TrainLeakLocs(**self.__dict__)
 		else:
 			# raise ValueError("To MHK: Please fill this")
-			TrainLeakSize(self.model, **self.__dict__)
+			TrainLeakSize(**self.__dict__)
 
 if __name__ == "__main__":
 

@@ -27,14 +27,13 @@ def _construct_network( **kwargs):
 
 	model = Sequential()
 	
-	print(kwargs.get('input_dim'))
 	model.add(Dense(layers[0],
 					input_shape = (input_dim,),
 					activation = input_activation_func,
 					kernel_regularizer = l(reg_param),
 					activity_regularizer = actl(reg_param)))
 	
-	for ind in range(1,len(layers) + 1):
+	for ind in range(1,len(layers)):
 		model.add(Dense(layers[ind],
 						activation = hidden_activation_func,
 						kernel_regularizer = l(reg_param),

@@ -29,6 +29,8 @@ def run():
 	modelling_settings = {
 			  'data_directory' : './Data/',
 			  'directory' : './Reports/DNN/',
+			  'leak_data_type' : 'Locs',
+			  'batch_number':1000,
 			  'n_rounds' : 1000,
 			  'warm_up' : False,
 			  'starting_batch' : 0,
