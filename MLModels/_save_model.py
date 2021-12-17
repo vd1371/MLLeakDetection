@@ -1,6 +1,6 @@
 from keras.models import load_model
 
-def save_model(*args, **kwargs):
+def _save_model(*args, **kwargs):
 	
 	directory = kwargs.get('directory')
 

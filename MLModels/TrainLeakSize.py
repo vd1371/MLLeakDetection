@@ -2,13 +2,12 @@ from ._load_model import load_model
 from ._construct_model import _construct_model
 from ._get_call_backs import _get_call_backs
 from ._split_and_normalize_data import split_and_normalize_data
-from ._save_model import save_model
+from ._save_model import _save_model
+from .RegressionReport import evaluate_regression
 
 from utils import Logger
-from ClassificationReport import evaluate_classification
-# from RegressionReport import evaluate_regression
 
-def run(model, **kwargs):
+def TrainLeakSize(model, **kwargs):
 	
 	warm_up = kwargs.get('warm_up')
 	starting_batch = kwargs.get('starting_batch')
@@ -44,12 +43,12 @@ def run(model, **kwargs):
 			print (f'Trian_err: {train_scores}, Test_err: {test_scores}')
 		log.info(f'batch_number:{batch_number}, Trian_err: {train_scores}, Test_err: {test_scores}')
 
-		save_model()
+		_save_model()
 
 		y_pred_train = model.predict(X_train)
 		y_pred_test = model.predict(X_test)
 
-		'''
+
 		evaluate_regression([f'OnTrain-xL{i}', X_train, Y_train, dates_train],
 							[f'OnTest-xL{i}', X_test, Y_test, dates_test],
 							ith_y = i,
@@ -60,15 +59,5 @@ def run(model, **kwargs):
 							slicer = 0.5,
 							should_check_hetero = False,
 							should_log_inverse = False)
-		'''
-
-		evaluate_classification([f'OnTrain-xL{i}', X_train, Y_train, dates_train],
-								[f'OnTest-xL{i}', X_test, Y_test, dates_test],
-								model = 'model',
-								model_name = f"{directory}/" + "SavedModel.h5", #this line should be modified, got model_name from model.save from _save_model.py
-								logger = 'logger',
-								model_name = f'DNN',
-								logger = log,
-								slicer = 1)
 
 		print ("----------------------------------------------------------")

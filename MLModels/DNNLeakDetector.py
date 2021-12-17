@@ -4,20 +4,20 @@ import requests
 import io
 import time
 
-from ._get_data import get_data
-from ._get_call_backs import _get_call_backs
+# from ._get_data import get_data
+# from ._get_call_backs import _get_call_backs
 from ._log_hyperparameters import _log_hyperparameters
 from ._construct_model import _construct_model
-from ._load_model import load_model
-from ._save_model import save_model
-from .run import run
+# from ._load_model import load_model
+# from ._save_model import save_model
+from .TrainLeakLocs import TrainLeakLocs
 from ._BaseDNNLeakDetector import BaseDNNLeakDetector
 
 from .TrainLeakLocs import TrainLeakLocs
 from .TrainLeakSize import TrainLeakSize
 
 class DNNLeakDetector(BaseDNNLeakDetector):
-	
+
 	def __init__(self, **params):
 		super().__init__(**params)
 
@@ -25,11 +25,12 @@ class DNNLeakDetector(BaseDNNLeakDetector):
 		_log_hyperparameters(**self.__dict__)
 		self.model = _construct_model(**self.__dict__)
 
-	def run(self, *args, **kwargs):
-		if self.modelling_type == "LeakLocs":
+	def run(self, *args, **kwargs):		
+		if self.leak_pred == 'LeakLocs':
 			TrainLeakLocs(self.model, **self.__dict__)
 		else:
-			raise ValueError("To MHK: Please fill this")
+			# raise ValueError("To MHK: Please fill this")
+			TrainLeakSize(self.model, **self.__dict__)
 
 if __name__ == "__main__":
 
@@ -37,5 +38,3 @@ if __name__ == "__main__":
 
 	myDetector = DNNLeakDetector(epochs = 500)
 	myDetector.run(n_rounds = 1000, warm_up = False, starting_batch = 0)
-
-

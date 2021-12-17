@@ -283,27 +283,65 @@
 
 
 
-settings = {'layers' : [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
-		'input_activation_func' : 'tanh',
-		'hidden_activation_func' : 'relu',
-		'final_activation_func' : 'softmax',
-		'loss_func' : 'categorical_crossentropy',
-		'epochs' : 500,
-		'min_delta' : 0.00001,
-		'patience' : 10,
-		'batch_size' : 32,
-		'should_early_stop' : False,
-		'should_checkpoint' : False,
-		'regul_type' : 'l2',
-		'act_regul_type' : 'l1',
-		'reg_param' : 0.01,
-		'dropout' : 0.2,
-		'optimizer' : 'adam',
-		'random_state' : 165,
-		'split_size' : 0.2,
-		'data_directory' : './Data/',
-		'directory' : './Reports/DNN',
-		'input_dim' : 50,
-		'output_dim' : 40}
+# class parent():
+# 	def __init__(self,*args,**kwargs):
+# 		self.layers = [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+# 		self.input_activation_func = 'tanh',
+# 		self.hidden_activation_func = 'relu',
+# 		self.final_activation_func = 'softmax',
+# 		self.loss_func = 'categorical_crossentropy',
+# 		self.epochs = 500,
+# 		self.min_delta = 0.00001,
+# 		self.patience = 10,
+# 		self.batch_size = 32,
+# 		self.should_early_stop = False
+# 		# 'should_checkpoint' : False,
+# 		# 'regul_type' : 'l2',
+# 		# 'act_regul_type' : 'l1',
+# 		# 'reg_param' : 0.01,
+# 		# 'dropout' : 0.2,
+# 		# 'optimizer' : 'adam',
+# 		# 'random_state' : 165,
+# 		# 'split_size' : 0.2,
+# 		# 'data_directory' : './Data/',
+# 		# 'directory' : './Reports/DNN',
+# 		# 'input_dim' : 50,
+# 		# 'output_dim' : 40}
+# 		# print(self.__dict__)
 
-print(settings.get('input_dim'))
+# 	def printing(self,**kwargs):
+# 		x = self.__dict__.get('batch_size')
+# 		print(x)
+
+
+# class child(parent):
+# 	def __init__(self, **params):
+# 		super().__init__()
+# 	# pass
+
+# 	def printing(self,**kwargs):
+# 		x = self.__dict__.get('batch_size')
+# 		print(x)
+
+# mychild=child()
+# # myparent = parent()
+# print(mychild())
+
+# # print(myparent.printing())
+
+class parent():
+	def __init__(self, *args, **kwargs):
+		self.name = 1
+		self.family_name = 2
+		self.modelling_type = 3
+
+class child(parent):
+	def __init__(self, *args, **kwargs):
+		super().__init__()
+
+	def run(self, *args, **kwargs):
+		print(self.family_name)
+
+mychild = child()
+
+mychild.run()

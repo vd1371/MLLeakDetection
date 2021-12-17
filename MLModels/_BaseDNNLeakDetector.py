@@ -1,5 +1,7 @@
 from utils import Logger
 
+from tensorflow.keras.regularizers import l1, l2
+
 class BaseDNNLeakDetector:
 
 	def __init__(self, **params):
@@ -36,3 +38,7 @@ class BaseDNNLeakDetector:
 		self.n_rounds = params.get("n_rounds")
 		self.warm_up = params.get("warm_up")
 		self.starting_batch = params.get("starting_batch")
+
+		self.leak_pred = params.get("leak_pred")
+
+		self.input_dim = params.get("input_dim")

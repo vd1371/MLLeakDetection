@@ -5,7 +5,7 @@ from utils import *
 
 def run():
 
-	DNN_settings = {'layers' : [1000, ],
+	DNN_settings = {'layers' : [1000,1000],
 			  'input_activation_func' : 'tanh',
 			  'hidden_activation_func' : 'relu',
 			  'final_activation_func' : 'softmax',
@@ -24,7 +24,7 @@ def run():
 			  'random_state' : 165,
 			  'split_size' : 0.2,
 			  'input_dim' : 50,
-			  'output_dim' : 40,}
+			  'output_dim' : 40}
 
 	modelling_settings = {
 			  'data_directory' : './Data/',
@@ -34,10 +34,11 @@ def run():
 			  'starting_batch' : 0,
 			  'method': 'offline',
 			  'verbose': True,
-			  'modelling_type': 'LeakLocs'}
+			  'leak_pred': 'LeakLocs'}
 
 	myDNNLeakDetector = DNNLeakDetector(**{**DNN_settings,
 											**modelling_settings})
+	myDNNLeakDetector._construct_model()
 	myDNNLeakDetector.run()
 
 
