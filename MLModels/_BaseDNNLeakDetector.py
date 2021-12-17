@@ -40,5 +40,10 @@ class BaseDNNLeakDetector:
 		self.starting_batch = params.get("starting_batch")
 
 		self.leak_pred = params.get("leak_pred")
+		self.leak_data_type = params.get("leak_data_type")
 
 		self.input_dim = params.get("input_dim")
+		self.method = params.get("method")
+		self.batch_number = params.get("batch_number")
+
+		self.n_sections = params.get("n_sections")

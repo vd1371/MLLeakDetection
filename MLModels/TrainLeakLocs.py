@@ -24,11 +24,9 @@ def TrainLeakLocs(**kwargs): #def TrainLeakLocs(model, **kwargs)
 	call_back_list = _get_call_backs()
 
 	for batch_number in range(starting_batch, n_rounds):
-		get_data()
-		raise ValueError
-		X, Y = get_data()
+		X, Y = get_data(**kwargs)
 		
-		X_train, X_test, Y_train, Y_test = split_and_normalize_data()
+		X_train, X_test, Y_train, Y_test = split_and_normalize_data(**kwargs)
 
 		if verbose:
 			print ("Trying to fit to the new generated data...")

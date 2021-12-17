@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 
 def split_and_normalize_data(*args, **kwargs):
 	
-	X, Y = get_data()
+	X, Y = get_data(**kwargs)
 	split_size = kwargs.get('split_size')
 	random_state = kwargs.get('random_state')
 

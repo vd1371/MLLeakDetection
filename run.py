@@ -24,7 +24,8 @@ def run():
 			  'random_state' : 165,
 			  'split_size' : 0.2,
 			  'input_dim' : 50,
-			  'output_dim' : 40}
+			  'output_dim' : 40,
+			  'n_sections' : 40}
 
 	modelling_settings = {
 			  'data_directory' : './Data/',
