@@ -1,10 +1,9 @@
 import os
 import pandas as pd
 
-def get_data_offline(*args, **kwargs):
+def get_data_offline(batch_number, **kwargs):
 
 	data_directory = kwargs.get("data_directory")
-	batch_number = kwargs.get("batch_number")
 	n_sections = kwargs.get("n_sections")
 	leak_data_type = kwargs.get("leak_data_type")
 

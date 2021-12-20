@@ -1,8 +1,8 @@
 from ._log_hyperparameters import _log_hyperparameters
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.models import Sequential
-from keras.regularizers import l1, l2
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dropout
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.regularizers import l1, l2
 
 
 def _construct_network( **kwargs):

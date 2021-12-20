@@ -6,7 +6,6 @@ import time
 
 from LeakDataGenerator import _h_d_measure
 
-
 from multiprocessing import Queue, Process
 import multiprocessing as mp
 
@@ -30,33 +29,26 @@ def MC_sample_parallel(N = 100000, batch_size = 1000):
 	for worker in pool:
 		worker.start()
 
-	all_samples = []
+	holder = []
 	done_workers = 0
 	batch_number = 0
 
 	start = time.time()
 	while any(worker.is_alive() for worker in pool):
-
 		while not results_queue.empty():
 			sample = results_queue.get()
 
 			if not sample is None:
-				all_samples.append(sample)
-
-		# Saving each batch
-		if len(all_samples) > batch_size:
-			batch_number += 1
-
-			convert_to_csv(all_samples[:batch_size], batch_number)
-			
-			print (f'Batch number {batch_number} is done in {time.time()-start:.2f}')
-			start = time.time()
-
-			all_samples = all_samples[batch_size:]
+				holder.append(sample)
 
 	print('finishing processes...')
 	for worker in pool:
 		worker.join()
+
+	return holder[batch_size:]
+
+
+
 
 def convert3(df, L = 2000):
 

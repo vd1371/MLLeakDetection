@@ -61,6 +61,9 @@ def h_d_measure(params):
 
 		hd_ff.append(val)
 
+	print (hd_ff)
+	raise ValueError
+
 	return (params, hd_ff)
 
 if __name__ == "__main__":

@@ -4,3 +4,4 @@ from ._convert_samples_to_df import convert_samples_to_df
 from ._clean_data import clean_data
 from ._convert_to_sections import convert_to_sections
 from ._convert_to_csv import convert_to_csv
+from .GenerateData import generate_data

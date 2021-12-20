@@ -1,5 +1,4 @@
 import logging as log
-from keras.regularizers import l1, l2
 import pprint
 
 def _log_hyperparameters(**kwargs):
@@ -22,8 +21,6 @@ def _log_hyperparameters(**kwargs):
 	optimizer = kwargs.get('optimizer')
 	random_state = kwargs.get('random_state')
 	split_size = kwargs.get('split_size')
-	l = l2 if regul_type == 'l2' else l1
-	actl = l1 if act_regul_type == 'l1' else l2
 
 	log.info(pprint.pformat({'layers': layers,
 							'input_activation_func': input_activation_func,
@@ -43,5 +40,4 @@ def _log_hyperparameters(**kwargs):
 							'optimizer': optimizer,
 							'random_state': random_state,
 							'split_size': split_size,
-							'l': l,
-							'actl': actl}))
+							}))

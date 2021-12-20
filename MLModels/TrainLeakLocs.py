@@ -10,7 +10,6 @@ from utils import Logger
 
 def TrainLeakLocs(**kwargs): #def TrainLeakLocs(model, **kwargs)
 	
-	batch_number = kwargs.get('batch_number')
 	warm_up = kwargs.get('warm_up')
 	starting_batch = kwargs.get('starting_batch')
 	n_rounds = kwargs.get('n_rounds')
@@ -24,7 +23,8 @@ def TrainLeakLocs(**kwargs): #def TrainLeakLocs(model, **kwargs)
 	call_back_list = _get_call_backs()
 
 	for batch_number in range(starting_batch, n_rounds):
-		X, Y = get_data(**kwargs)
+		
+		X, Y = get_data(batch_number, **kwargs)
 		
 		X_train, X_test, Y_train, Y_test = split_and_normalize_data(**kwargs)
 
@@ -47,6 +47,8 @@ def TrainLeakLocs(**kwargs): #def TrainLeakLocs(model, **kwargs)
 			print (f'Trian_err: {train_scores}, Test_err: {test_scores}')
 		log.info(f'batch_number:{batch_number}, Trian_err: {train_scores}, Test_err: {test_scores}')
 
+
+		raise ValueError ("Please take care of save model at your convenience")
 		_save_model()
 
 		y_pred_train = model.predict(X_train)
@@ -54,10 +56,7 @@ def TrainLeakLocs(**kwargs): #def TrainLeakLocs(model, **kwargs)
 
 		evaluate_classification([f'OnTrain-xL{i}', X_train, Y_train, dates_train],
 								[f'OnTest-xL{i}', X_test, Y_test, dates_test],
-								model = 'model',
-								model_name = f"{directory}/" + "SavedModel.h5",
-								#this line should be modified, got model_name from model.save from _save_model.py
-								# logger = 'logger',
-								# model_name = f'DNN',
+								model = model,
+								model_name = f"DNN",
 								logger = log,
 								slicer = 1)

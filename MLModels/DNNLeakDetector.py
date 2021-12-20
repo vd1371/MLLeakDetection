@@ -4,12 +4,8 @@ import requests
 import io
 import time
 
-# from ._get_data import get_data
-# from ._get_call_backs import _get_call_backs
 from ._log_hyperparameters import _log_hyperparameters
 from ._construct_model import _construct_model
-# from ._load_model import load_model
-# from ._save_model import save_model
 from .TrainLeakLocs import TrainLeakLocs
 from ._BaseDNNLeakDetector import BaseDNNLeakDetector
 
@@ -27,16 +23,11 @@ class DNNLeakDetector(BaseDNNLeakDetector):
 
 	def run(self, *args, **kwargs):		
 		if self.leak_pred == 'LeakLocs':
-			# print(self.__dict__.get('model'))
-			# raise ValueError
 			TrainLeakLocs(**self.__dict__)
 		else:
-			# raise ValueError("To MHK: Please fill this")
 			TrainLeakSize(**self.__dict__)
 
 if __name__ == "__main__":
-
-	# print (MC_sample_parallel(N=1000))
 
 	myDetector = DNNLeakDetector(epochs = 500)
 	myDetector.run(n_rounds = 1000, warm_up = False, starting_batch = 0)
