@@ -329,19 +329,70 @@
 
 # # print(myparent.printing())
 
-class parent():
-	def __init__(self, *args, **kwargs):
-		self.name = 1
-		self.family_name = 2
-		self.modelling_type = 3
+# class parent():
+# 	def __init__(self, *args, **kwargs):
+# 		self.name = 1
+# 		self.family_name = 2
+# 		self.modelling_type = 3
 
-class child(parent):
-	def __init__(self, *args, **kwargs):
-		super().__init__()
+# class child(parent):
+# 	def __init__(self, *args, **kwargs):
+# 		super().__init__()
 
-	def run(self, *args, **kwargs):
-		print(self.family_name)
+# 	def run(self, *args, **kwargs):
+# 		print(self.family_name)
 
-mychild = child()
+# mychild = child()
 
-mychild.run()
+# mychild.run()
+
+# import requests
+
+# print('powershell is running')
+
+# import requests
+
+# r = requests.get('https://www.google.com/')
+
+# print(r.status_code)
+
+# from http.server import HTTPServer, BaseHTTPRequestHandler
+
+# class helloHandler(BaseHTTPRequestHandler):
+# 	def do_GET(self):
+# 		self.send_response(200)
+# 		self.send_header('content-type', 'text/html')
+# 		self.end_headers()
+# 		self.wfile.write('This is a test'.encode())
+
+
+# def main():
+# 	Port = 8000
+# 	server = HTTPServer(('', Port), helloHandler)
+# 	print('Server is running on the port %s' %Port)
+# 	server.serve_forever()
+
+# if __name__ == '__main__':
+# 	main()
+
+
+# string = 'This is a string'
+# print(string.encode())
+
+# from urllib.parse import urlparse, parse_qs
+
+# x = urlparse('https://www.google.com/search?q=test&oq=test&aqs=chrome..69i57j0i271l3j69i61j69i60j69i61.1385j0j7&sourceid=chrome&ie=UTF-8').query
+# x = parse_qs(x)
+# print(x)
+
+import multiprocessing as mp
+from multiprocessing import Queue
+
+q = Queue()
+
+for i in range(10):
+	q.put(i)
+
+q.get()
+
+print(q.get())

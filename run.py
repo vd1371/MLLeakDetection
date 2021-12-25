@@ -19,11 +19,13 @@ def run():
 			  'method': 'offline',
 			  'verbose': True,
 			  'leak_pred': 'LeakLocs',
-			  'n_cores': 2}
+			  'n_cores': 2,
+			  'batch_size_data_data': 1000,
+			  'N': 10000}
 
 	## On the Generator Side
 	# Step 1: Run the generator
-	generate_data(**modelling_settings)
+	generate_batch_data_df(**modelling_settings)
 
 	# Step 2: Start the Server
 	# run_server(server_class=HTTPServer,

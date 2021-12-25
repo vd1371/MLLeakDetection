@@ -7,7 +7,7 @@ import time
 
 from copy import deepcopy
 
-def h_d_measure(params):
+def _h_d_measure(**params):
 
 	L = params.get('L')
 	xL = params.get('xL')
@@ -61,8 +61,8 @@ def h_d_measure(params):
 
 		hd_ff.append(val)
 
-	print (hd_ff)
-	raise ValueError
+	# print (hd_ff)
+	# raise ValueError
 
 	return (params, hd_ff)
 

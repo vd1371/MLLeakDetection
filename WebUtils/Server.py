@@ -1,8 +1,3 @@
-import socket
-import tqdm
-import os
-import time
-
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
@@ -21,7 +16,7 @@ class DataSender(BaseHTTPRequestHandler):
 			query_components = parse_qs(urlparse(self.path).query)
 			batch_number = int(query_components['batch_number'][0])
 
-			with open(f"Data/LeakLocs-{batch_number}.csv", "rb") as f:
+			with open(f"./Data/LeakLocs-{batch_number}.csv", "rb") as f:
 				self.wfile.write(f.read())
 
 		except:

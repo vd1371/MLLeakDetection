@@ -7,7 +7,7 @@ import time
 
 from copy import deepcopy
 
-from LeakDataGenerator import h_d_measure
+from LeakDataGenerator import _h_d_measure
 
 def plot_varying_location():
 

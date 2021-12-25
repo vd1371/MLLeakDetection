@@ -4,7 +4,7 @@ from ._clean_data import clean_data
 from ._convert_to_sections import convert_to_sections
 
 
-def _generate_batch_data_df(**params):
+def generate_batch_data_df(**params):
 
 	samples = _generate_batch_data_raw(**params)
 	df = convert_samples_to_df(samples)
