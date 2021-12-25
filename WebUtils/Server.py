@@ -13,16 +13,18 @@ class DataSender(BaseHTTPRequestHandler):
 		self._set_response()
 
 		try:
-			query_components = parse_qs(urlparse(self.path).query)
-			batch_number = int(query_components['batch_number'][0])
+			# query_components = parse_qs(urlparse(self.path).query)
+			# batch_number = int(query_components['batch_number'][0])
 
-			with open(f"./Data/LeakLocs-{batch_number}.csv", "rb") as f:
+			# with open(f"./Data/LeakLocs-{batch_number}.csv", "rb") as f:
+			# 	self.wfile.write(f.read())
+			with open("./Data/LeakLocs-123.csv", "rb") as f:
 				self.wfile.write(f.read())
 
 		except:
 			self.wfile.write(b"NotFound")
 
-def run_server(server_class=HTTPServer, handler_class=DataSender, addr="127.0.0.1", port=8000):
+def run_server(server_class=HTTPServer, handler_class=DataSender, addr="127.0.0.1", port=12000):
 
 	server_address = (addr, port)
 	httpd = server_class(server_address, handler_class)
@@ -33,4 +35,4 @@ def run_server(server_class=HTTPServer, handler_class=DataSender, addr="127.0.0.
 
 if __name__ == "__main__":
 
-	run()
+	run_server()

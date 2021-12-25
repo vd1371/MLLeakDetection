@@ -385,14 +385,51 @@
 # x = parse_qs(x)
 # print(x)
 
-import multiprocessing as mp
-from multiprocessing import Queue
+# import multiprocessing as mp
+# from multiprocessing import Queue
 
-q = Queue()
+# q = Queue()
 
-for i in range(10):
-	q.put(i)
+# for i in range(10):
+# 	q.put(i)
 
-q.get()
+# q.get()
 
-print(q.get())
+# print(q.get())
+
+# from io import StringIO
+
+
+# string = 'hello world!'
+# print(type(string))
+
+# string = StringIO(string)
+# print(type(string))
+
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlparse
+from urllib.parse import parse_qs
+
+class DataSender(BaseHTTPRequestHandler):
+
+	def _set_response(self):
+		print(self.path)
+		self.send_response(200)
+		self.send_header('Content-type', 'text/html')
+		self.end_headers()
+
+	def do_GET(self):
+		self._set_response()
+
+		try:
+			query_components = parse_qs(urlparse(self.path).query)
+			batch_number = int(query_components['batch_number'][0])
+
+			with open(f"./Data/LeakLocs-{batch_number}.csv", "rb") as f:
+				self.wfile.write(f.read())
+
+		except:
+			self.wfile.write(b"NotFound")
+
+myDataSender = DataSender()
+myDataSender._set_response()

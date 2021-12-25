@@ -14,7 +14,6 @@ def _generate_batch_data_raw_parallel(**params):
 
 	pool = []
 	for j in range (n_cores):
-		print('============================================================HERE===========================================================')
 		worker = Process(target = _go_crazy, args = (results_queue, N_for_each_core, ))
 
 		pool.append(worker)

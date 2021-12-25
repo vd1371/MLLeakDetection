@@ -1,12 +1,8 @@
-import socket
-import tqdm
-import os
-
 import pandas as pd
 import requests
 import io
 
-def make_request(batch_number = 10):
+def make_request(batch_number = 123):
 
     x = requests.get(f"http://127.0.0.1/?batch_number={batch_number}").content.decode("utf-8")
 
