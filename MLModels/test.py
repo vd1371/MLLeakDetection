@@ -406,30 +406,153 @@
 # string = StringIO(string)
 # print(type(string))
 
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from urllib.parse import urlparse
-from urllib.parse import parse_qs
+# from http.server import BaseHTTPRequestHandler, HTTPServer
+# from urllib.parse import urlparse
+# from urllib.parse import parse_qs
 
-class DataSender(BaseHTTPRequestHandler):
+# class DataSender(BaseHTTPRequestHandler):
 
-	def _set_response(self):
-		print(self.path)
-		self.send_response(200)
-		self.send_header('Content-type', 'text/html')
-		self.end_headers()
+# 	def _set_response(self):
+# 		print(self.path)
+# 		self.send_response(200)
+# 		self.send_header('Content-type', 'text/html')
+# 		self.end_headers()
 
-	def do_GET(self):
-		self._set_response()
+# 	def do_GET(self):
+# 		self._set_response()
 
-		try:
-			query_components = parse_qs(urlparse(self.path).query)
-			batch_number = int(query_components['batch_number'][0])
+# 		try:
+# 			query_components = parse_qs(urlparse(self.path).query)
+# 			batch_number = int(query_components['batch_number'][0])
 
-			with open(f"./Data/LeakLocs-{batch_number}.csv", "rb") as f:
-				self.wfile.write(f.read())
+# 			with open(f"./Data/LeakLocs-{batch_number}.csv", "rb") as f:
+# 				self.wfile.write(f.read())
 
-		except:
-			self.wfile.write(b"NotFound")
+# 		except:
+# 			self.wfile.write(b"NotFound")
 
-myDataSender = DataSender()
-myDataSender._set_response()
+# myDataSender = DataSender()
+# myDataSender._set_response()
+
+# import requests
+
+# x = requests.get('https://www.google.com/')
+# if  "NotFound" in x:
+# 	print("didn't response")
+
+# import pandas as pd
+
+# df = pd.read_csv('../Data/LeakLocs-123.csv', header = 0, index_col = 0)
+
+
+# def _normalize_row(df):
+	
+# 	for row in range(df.shape[0]):
+# 		holder = []
+
+# 		for number in df.iloc[row,:]:
+# 			holder.append(number)
+
+# 		for index, item in enumerate(holder):
+# 			item = (item - min(holder))/(max(holder) - min(holder))
+# 			holder[index] = item
+
+# 		df.iloc[row,:] = holder
+
+# 	return df
+
+
+# def _concat(df):
+# 	df_real = df.iloc[:,:25]
+# 	df_imag = df.iloc[:,25:51]
+# 	df_loc = df.iloc[:,51:]
+
+# 	df = pd.concat([_normalize_row(df_real), _normalize_row(df_imag), df_loc], axis=1)
+
+# 	return(df)
+
+# df = _concat(_normalize_row(df))
+
+# print(df.iloc[3,:25])
+
+
+
+# import pandas as pd
+
+# df = pd.read_csv('../Data/LeakLocs-123.csv', header = 0, index_col = 0)
+# df_real = df.iloc[:,:25]
+
+# for row in range(df_real.shape[0]):
+# 	holder = []
+# 	x =[]
+# 	for number in df_real.iloc[row,:]:
+# 		holder.append(number)
+
+# 	for index, item in enumerate(holder):
+# 		item = (item - min(holder))/(max(holder) - min(holder))
+# 		holder[index] = item
+
+# 	df_real.iloc[row,:] = holder
+
+# print(df_real.iloc[0,:])
+
+# import pandas as pd 
+# from sklearn.preprocessing import normalize
+
+# df = pd.read_csv('../Data/LeakLocs-123.csv', header = 0, index_col = 0)
+# df_real = df.iloc[:,:25]
+
+# df_real = normalize(df_real, norm = 'max', axis = 0)
+
+# print(pd.DataFrame(df_real).iloc[0,:])
+
+
+# import pandas as pd 
+# from sklearn.preprocessing import Normalizer
+
+# df = pd.read_csv('../Data/LeakLocs-123.csv', header = 0, index_col = 0)
+
+# def _normalize_row(df):
+
+# 	normalizer = Normalizer(norm = 'l2')
+# 	columns = df.columns
+# 	df = normalizer.fit_transform(df)
+# 	df = pd.DataFrame(df, columns = columns)
+
+# 	return df
+
+# def _concat(df):
+# 	df_real = df.iloc[:,:25]
+# 	df_imag = df.iloc[:,25:51]
+# 	df_loc = df.iloc[:,51:]
+
+# 	df = pd.concat([_normalize_row(df_real), _normalize_row(df_imag), df_loc], axis=1)
+
+# 	return(df)
+
+# print(_concat(_normalize_row(df)))
+
+
+import pandas as pd 
+from sklearn.preprocessing import normalize
+
+df = pd.read_csv('../Data/LeakLocs-123.csv', header = 0, index_col = 0)
+
+def _normalize_row(df):
+
+	columns = df.columns
+	df = normalize(df, norm = 'l2', axis = 0)
+	df = pd.DataFrame(df, columns = columns)
+
+	return df
+
+def _concat(df):
+	df_real = df.iloc[:,:25]
+	df_imag = df.iloc[:,25:51]
+	df_loc = df.iloc[:,51:]
+
+	df = pd.concat([_normalize_row(df_real), _normalize_row(df_imag), df_loc], axis=1)
+
+	return(df)
+
+print(_concat(_normalize_row(df)))
