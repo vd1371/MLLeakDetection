@@ -1,5 +1,7 @@
 from LeakDataGenerator import *
-from MLModels import DNNLeakDetector
+# from MLModels import DNNLeakDetector
+from MLModels import RFLeakDetector
+
 from utils import *
 
 from WebUtils import *
@@ -10,10 +12,10 @@ def run():
 
 	modelling_settings = {
 			  'data_directory' : './Data/',
-			  'directory' : './Reports/DNN/',
+			  'report_directory': './reports/RF',
 			  'leak_data_type' : 'Locs',
 			  'starting_batch' : 0,
-			  'n_batches' : 3000,
+			  'n_batches' : 100,
 			  'batch_size_of_generator': 10000,
 			  'warm_up' : False,
 			  'method': 'offline',
@@ -21,11 +23,13 @@ def run():
 			  'leak_pred': 'LeakLocs',
 			  'n_cores': 2,
 			  'batch_size_data': 1000,
-			  'N': 10000}
+			  'N': 10000,
+			  'n_sections' : 40,
+			  'input_dim' : 50,}
 
 	## On the Generator Side
 	# Step 1: Run the generator
-	generate_batch_data_df(**modelling_settings) #df shape = (9996,90) instead of (10000,90). maybe we should fix this
+	# generate_data(**modelling_settings)
 
 	# Step 2: Start the Server
 	# run_server(server_class=HTTPServer,
@@ -51,9 +55,8 @@ def run():
 	# 		  'optimizer' : 'adam',
 	# 		  'random_state' : 165,
 	# 		  'split_size' : 0.2,
-	# 		  'input_dim' : 50,
 	# 		  'output_dim' : 40,
-	# 		  'n_sections' : 40}
+			  # 'directory' : './Reports/DNN/'}
 
 	
 
@@ -62,6 +65,19 @@ def run():
 	# myDNNLeakDetector._construct_model()
 	# myDNNLeakDetector.run()
 
+	# Step 4: Training random forests
+	rf_settings = {'n_estimators' : 500,
+					'max_depth' : None,
+					'min_samples_split' : 2,
+					'min_samples_leaf' : 1,
+					'max_features' : 'auto',
+					'should_cross_val' : False,
+					'n_jobs' : -1,}
+
+	myRFLeakDetector = RFLeakDetector(**{**rf_settings,
+										**modelling_settings})
+	myRFLeakDetector._construct_model()
+	myRFLeakDetector.run()
 
 if __name__ == "__main__":
 	run()

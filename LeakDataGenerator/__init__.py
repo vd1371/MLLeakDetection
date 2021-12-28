@@ -5,4 +5,4 @@ from ._clean_data import clean_data
 from ._convert_to_sections import convert_to_sections
 from ._convert_to_csv import convert_to_csv
 from ._generate_batch_data_df import generate_batch_data_df
-# from .GenerateData import generate_data
+from .GenerateData import generate_data

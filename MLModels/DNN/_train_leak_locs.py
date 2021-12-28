@@ -8,7 +8,7 @@ from .ClassificationReport import evaluate_classification
 
 from utils import Logger
 
-def TrainLeakLocs(**kwargs): #def TrainLeakLocs(model, **kwargs)
+def TrainLeakLocs(**kwargs):
 	
 	warm_up = kwargs.get('warm_up')
 	starting_batch = kwargs.get('starting_batch')
@@ -26,7 +26,7 @@ def TrainLeakLocs(**kwargs): #def TrainLeakLocs(model, **kwargs)
 		
 		X, Y = get_data(batch_number, **kwargs)
 		
-		X_train, X_test, Y_train, Y_test = split_and_normalize_data(**kwargs)
+		X_train, X_test, Y_train, Y_test = split_and_normalize_data(X, Y)
 
 		if verbose:
 			print ("Trying to fit to the new generated data...")
