@@ -8,7 +8,7 @@ from ._get_data import get_data
 def _normalize_row(df):
 
 	columns = df.columns
-	df = normalize(df, norm = 'l2', axis = 0)
+	df = normalize(df, norm = 'l1', axis = 0)
 	df = pd.DataFrame(df, columns = columns)
 
 	return df

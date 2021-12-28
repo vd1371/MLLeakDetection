@@ -25,11 +25,11 @@ def run():
 
 	## On the Generator Side
 	# Step 1: Run the generator
-	# generate_batch_data_df(**modelling_settings) #df shape = (9996,90) instead of (10000,90). maybe we should fix this
+	generate_batch_data_df(**modelling_settings) #df shape = (9996,90) instead of (10000,90). maybe we should fix this
 
 	# Step 2: Start the Server
-	run_server(server_class=HTTPServer,
-				handler_class=DataSender, addr="127.0.0.1", port=12000)
+	# run_server(server_class=HTTPServer,
+	# 			handler_class=DataSender, addr="127.0.0.1", port=12000)
 
 	## On the training side
 	# Step 3: Run the below code
