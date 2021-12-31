@@ -533,26 +533,28 @@
 # print(_concat(_normalize_row(df)))
 
 
-import pandas as pd 
-from sklearn.preprocessing import normalize
+# import pandas as pd 
+# from sklearn.preprocessing import normalize
 
-df = pd.read_csv('../Data/LeakLocs-123.csv', header = 0, index_col = 0)
+# df = pd.read_csv('../Data/LeakLocs-123.csv', header = 0, index_col = 0)
 
-def _normalize_row(df):
+# def _normalize_row(df):
 
-	columns = df.columns
-	df = normalize(df, norm = 'l2', axis = 0)
-	df = pd.DataFrame(df, columns = columns)
+# 	columns = df.columns
+# 	df = normalize(df, norm = 'l2', axis = 0)
+# 	df = pd.DataFrame(df, columns = columns)
 
-	return df
+# 	return df
 
-def _concat(df):
-	df_real = df.iloc[:,:25]
-	df_imag = df.iloc[:,25:51]
-	df_loc = df.iloc[:,51:]
+# def _concat(df):
+# 	df_real = df.iloc[:,:25]
+# 	df_imag = df.iloc[:,25:51]
+# 	df_loc = df.iloc[:,51:]
 
-	df = pd.concat([_normalize_row(df_real), _normalize_row(df_imag), df_loc], axis=1)
+# 	df = pd.concat([_normalize_row(df_real), _normalize_row(df_imag), df_loc], axis=1)
 
-	return(df)
+# 	return(df)
 
-print(_concat(_normalize_row(df)))
+# print(_concat(_normalize_row(df)))
+
+# import catboost

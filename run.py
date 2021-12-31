@@ -1,6 +1,7 @@
 from LeakDataGenerator import *
 # from MLModels import DNNLeakDetector
 from MLModels import RFLeakDetector
+from MLModels import CatBoostLeakDetector
 
 from utils import *
 
@@ -65,19 +66,39 @@ def run():
 	# myDNNLeakDetector._construct_model()
 	# myDNNLeakDetector.run()
 
-	# Step 4: Training random forests
-	rf_settings = {'n_estimators' : 500,
-					'max_depth' : None,
-					'min_samples_split' : 2,
-					'min_samples_leaf' : 1,
-					'max_features' : 'auto',
-					'should_cross_val' : False,
-					'n_jobs' : -1,}
+	# Step 4-1: Training random forests
+	# rf_settings = {'n_estimators' : 500,
+	# 				'max_depth' : None,
+	# 				'min_samples_split' : 2,
+	# 				'min_samples_leaf' : 1,
+	# 				'max_features' : 'auto',
+	# 				'should_cross_val' : False,
+	# 				'n_jobs' : -1,}
 
-	myRFLeakDetector = RFLeakDetector(**{**rf_settings,
-										**modelling_settings})
-	myRFLeakDetector._construct_model()
-	myRFLeakDetector.run()
+	# myRFLeakDetector = RFLeakDetector(**{**rf_settings,
+	# 									**modelling_settings})
+	# myRFLeakDetector._construct_model()
+	# myRFLeakDetector.run()
+
+	# # Step 4-2: Training catboost
+	cb_settings = {'iterations' : 1,
+					'learning_rate' : 0.01,
+					'depth' : 12,
+					'l2_leaf_reg' : 0.000001,
+					'loss_function' : 'MultiClass',
+					'allow_writing_files' : False,
+					'eval_metric' : "Accuracy",
+					'task_type' : 'CPU',
+					'random_seed' : 42,
+					'verbose' : 400,
+					'boosting_type' : 'Ordered',
+					'thread_count' : -1,}
+
+	myCatBoostLeakDetector = CatBoostLeakDetector(**{**cb_settings,
+		                                          **modelling_settings})
+	myCatBoostLeakDetector._construct_model()
+	myCatBoostLeakDetector.run()
+
 
 if __name__ == "__main__":
 	run()

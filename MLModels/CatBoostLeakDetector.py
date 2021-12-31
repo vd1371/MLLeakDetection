@@ -1,10 +1,10 @@
 #Loading dependencies
-from .RF import BaseRFLeakDetector
-from .RF import _log_hyperparameters
-from .RF import _construct_model
-from .RF import train_leak_locs
+from .CatBoost import BaseCatBoostLeakDetector
+from .CatBoost import _log_hyperparameters
+from .CatBoost import _construct_model
+from .CatBoost import train_leak_locs
 
-class RFLeakDetector(BaseRFLeakDetector):
+class CatBoostLeakDetector(BaseCatBoostLeakDetector):
 
 	def __init__(self, **params):
 		super().__init__(**params)
