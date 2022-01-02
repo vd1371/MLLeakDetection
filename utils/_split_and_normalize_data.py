@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import normalize
 
@@ -12,10 +13,11 @@ def _normalize_row(df):
 
 def _concat(df, input_dim):
 
-	n_of_cols = int(input_dim/2)
+	even_indices = np.arange(0, input_dim, 2, dtype=int)
+	odd_indices = np.arange(1, input_dim, 2, dtype=int)
 
-	df_real = df.iloc[:,:n_of_cols]
-	df_imag = df.iloc[:,n_of_cols:]
+	df_real = df.iloc[:,even_indices]
+	df_imag = df.iloc[:,odd_indices]
 
 	df = pd.concat([_normalize_row(df_real), _normalize_row(df_imag)], axis=1)
 

@@ -17,7 +17,7 @@ def run():
 			  'leak_data_type' : 'Locs',
 			  'starting_batch' : 0,
 			  'n_batches' : 100,
-			  'batch_size_of_generator': 10000,
+			  'batch_size_of_generator': 30000,
 			  'warm_up' : False,
 			  'method': 'offline',
 			  'verbose': True,
@@ -67,37 +67,37 @@ def run():
 	# myDNNLeakDetector.run()
 
 	# Step 4-1: Training random forests
-	# rf_settings = {'n_estimators' : 500,
-	# 				'max_depth' : None,
-	# 				'min_samples_split' : 2,
-	# 				'min_samples_leaf' : 1,
-	# 				'max_features' : 'auto',
-	# 				'should_cross_val' : False,
-	# 				'n_jobs' : -1,}
+	rf_settings = {'n_estimators' : 500,
+					'max_depth' : None,
+					'min_samples_split' : 2,
+					'min_samples_leaf' : 1,
+					'max_features' : 'auto',
+					'should_cross_val' : False,
+					'n_jobs' : -1,}
 
-	# myRFLeakDetector = RFLeakDetector(**{**rf_settings,
-	# 									**modelling_settings})
-	# myRFLeakDetector._construct_model()
-	# myRFLeakDetector.run()
+	myRFLeakDetector = RFLeakDetector(**{**rf_settings,
+										**modelling_settings})
+	myRFLeakDetector._construct_model()
+	myRFLeakDetector.run()
 
 	# # Step 4-2: Training catboost
-	cb_settings = {'iterations' : 1,
-					'learning_rate' : 0.01,
-					'depth' : 12,
-					'l2_leaf_reg' : 0.000001,
-					'loss_function' : 'MultiClass',
-					'allow_writing_files' : False,
-					'eval_metric' : "Accuracy",
-					'task_type' : 'CPU',
-					'random_seed' : 42,
-					'verbose' : 400,
-					'boosting_type' : 'Ordered',
-					'thread_count' : -1,}
+	# cb_settings = {'iterations' : 1000,
+	# 				'learning_rate' : 0.0001,
+	# 				'depth' : 9,
+	# 				'l2_leaf_reg' : 0.000001,
+	# 				'loss_function' : 'Logloss',
+	# 				'allow_writing_files' : False,
+	# 				'eval_metric' : "Accuracy",
+	# 				'task_type' : 'CPU',
+	# 				'random_seed' : 42,
+	# 				'verbose' : 400,
+	# 				'boosting_type' : 'Ordered',
+	# 				'thread_count' : -1,}
 
-	myCatBoostLeakDetector = CatBoostLeakDetector(**{**cb_settings,
-		                                          **modelling_settings})
-	myCatBoostLeakDetector._construct_model()
-	myCatBoostLeakDetector.run()
+	# myCatBoostLeakDetector = CatBoostLeakDetector(**{**cb_settings,
+	# 	                                          **modelling_settings})
+	# myCatBoostLeakDetector._construct_model()
+	# myCatBoostLeakDetector.run()
 
 
 if __name__ == "__main__":
