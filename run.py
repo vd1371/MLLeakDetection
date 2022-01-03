@@ -1,9 +1,9 @@
 from LeakDataGenerator import *
 # from MLModels import DNNLeakDetector
-from MLModels import RFLeakDetector
-from MLModels import CatBoostLeakDetector
+# from MLModels import RFLeakDetector
+# from MLModels import CatBoostLeakDetector
 
-from utils import *
+# from utils import *
 
 from WebUtils import *
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -13,11 +13,10 @@ def run():
 
 	modelling_settings = {
 			  'data_directory' : './Data/',
-			  'report_directory': './reports/RF',
-			  'leak_data_type' : 'Locs',
+			  'report_directory': './reports/CatBoost-LeakLocs',
 			  'starting_batch' : 0,
-			  'n_batches' : 100,
-			  'batch_size_of_generator': 30000,
+			  'n_batches' : 50,
+			  'batch_size_of_generator': 10000,
 			  'warm_up' : False,
 			  'method': 'offline',
 			  'verbose': True,
@@ -26,11 +25,12 @@ def run():
 			  'batch_size_data': 1000,
 			  'N': 10000,
 			  'n_sections' : 40,
-			  'input_dim' : 50,}
+			  'input_dim' : 50,
+			  'split_size': 0.2,}
 
 	## On the Generator Side
 	# Step 1: Run the generator
-	# generate_data(**modelling_settings)
+	generate_data(**modelling_settings)
 
 	# Step 2: Start the Server
 	# run_server(server_class=HTTPServer,
@@ -67,28 +67,30 @@ def run():
 	# myDNNLeakDetector.run()
 
 	# Step 4-1: Training random forests
-	rf_settings = {'n_estimators' : 500,
-					'max_depth' : None,
-					'min_samples_split' : 2,
-					'min_samples_leaf' : 1,
-					'max_features' : 'auto',
-					'should_cross_val' : False,
-					'n_jobs' : -1,}
+	# rf_settings = {'n_estimators' : 100,
+	# 				'max_depth' : 200,
+	# 				'min_samples_split' : 2,
+	# 				'min_samples_leaf' : 1,
+	# 				'max_features' : 'auto',
+	# 				'should_cross_val' : False,
+	# 				'n_jobs' : -1,}
 
-	myRFLeakDetector = RFLeakDetector(**{**rf_settings,
-										**modelling_settings})
-	myRFLeakDetector._construct_model()
-	myRFLeakDetector.run()
+	# myRFLeakDetector = RFLeakDetector(**{**rf_settings,
+	# 									**modelling_settings})
+	# myRFLeakDetector._construct_model()
+	# myRFLeakDetector.run()
 
 	# # Step 4-2: Training catboost
 	# cb_settings = {'iterations' : 1000,
-	# 				'learning_rate' : 0.0001,
+	# 				'learning_rate' : 0.1,
 	# 				'depth' : 9,
-	# 				'l2_leaf_reg' : 0.000001,
+	# 				'l2_leaf_reg' : 0.001,
 	# 				'loss_function' : 'Logloss',
+	# 				# 'loss_function' : 'RMSE',
 	# 				'allow_writing_files' : False,
+	# 				# 'eval_metric' : "R2",
 	# 				'eval_metric' : "Accuracy",
-	# 				'task_type' : 'CPU',
+	# 				'task_type' : 'GPU',
 	# 				'random_seed' : 42,
 	# 				'verbose' : 400,
 	# 				'boosting_type' : 'Ordered',

@@ -1,7 +1,3 @@
-
-
-
-
 from ._load_model import _load_model
 from ._construct_network import _construct_network
 

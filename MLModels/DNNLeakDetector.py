@@ -1,11 +1,9 @@
 #Loading dependencies
-from ._log_hyperparameters import _log_hyperparameters
-from ._construct_model import _construct_model
-from .TrainLeakLocs import TrainLeakLocs
-from ._BaseDNNLeakDetector import BaseDNNLeakDetector
-
-from .TrainLeakLocs import TrainLeakLocs
-from .TrainLeakSize import TrainLeakSize
+from .DNN import _log_hyperparameters
+from .DNN import _construct_model
+from .DNN import BaseDNNLeakDetector
+from .DNN import train_leak_locs
+# from .TrainLeakSize import TrainLeakSize
 
 class DNNLeakDetector(BaseDNNLeakDetector):
 
@@ -18,9 +16,9 @@ class DNNLeakDetector(BaseDNNLeakDetector):
 
 	def run(self, *args, **kwargs):		
 		if self.leak_pred == 'LeakLocs':
-			TrainLeakLocs(**self.__dict__)
+			train_leak_locs(**self.__dict__)
 		else:
-			TrainLeakSize(**self.__dict__)
+			train_leak_size(**self.__dict__)
 
 if __name__ == "__main__":
 

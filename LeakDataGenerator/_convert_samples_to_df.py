@@ -36,6 +36,13 @@ def convert_samples_to_df(samples):
 
 		holder.append(tmp_holder)
 
-	df = pd.DataFrame(holder, columns = cols)
+	indices = [generate_indices() for _ in range(len(holder))]
+	df = pd.DataFrame(holder, columns = cols, index = indices)
+
 
 	return df
+
+def generate_indices():
+
+	ind = int(np.random.random()*np.random.random()*np.random.random()*1000000000)
+	return ind

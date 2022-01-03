@@ -7,19 +7,22 @@ def _load_all_offline_data(**params):
 	n_sections = params.get("n_sections")
 	leak_pred = params.get("leak_pred")
 	verbose = params.get("verbose")
+	input_dim = params.get("input_dim")
+	n_sections = params.get("n_sections")
 
 	if verbose:
 		print ("Trying to load files...")
 
 	holder = []
-	for file_name in os.listdir(data_directory):
+	for file_name in os.listdir(data_directory)[:]:
 		if leak_pred in file_name and '.csv' in file_name:
 			data = pd.read_csv(f"{data_directory}/{file_name}", index_col = 0)
 			holder.append(data)
 
 	data = pd.concat(holder, axis = 0)
-	data.reset_index(inplace = True)
 
-	X, Y = data.iloc[:, :-n_sections], data.iloc[:, -n_sections:]
+	X = data.iloc[:, :input_dim]
+	Y = data.iloc[:, input_dim:input_dim+n_sections]
+	leak_info = data.iloc[:, input_dim+n_sections:]
 
-	return X, Y
+	return X, Y, leak_info

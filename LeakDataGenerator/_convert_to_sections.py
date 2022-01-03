@@ -5,10 +5,11 @@ def convert_to_sections(df, n_sections = 40, L =2000, max_n_leaks = 3):
 
 	l_sections = int(L/n_sections)
 
-	df.loc[:, 'xL0':'xL2'] = ((df.loc[:, 'xL0':'xL2']-0.0000001) / l_sections)
+	for i in range(max_n_leaks):
+		df[f'xind{i}'] = (df.loc[:, f'xL{i}'].values-0.0000001)/l_sections
 
 	# Converting to integer
-	cols = ['xL0', 'xL1', 'xL2']
+	cols = ['xind0', 'xind1', 'xind2']
 	df[cols] = df[cols].applymap(np.int16)
 
 	holder_locs = []
@@ -23,10 +24,10 @@ def convert_to_sections(df, n_sections = 40, L =2000, max_n_leaks = 3):
 
 		for i in range(max_n_leaks):
 
-			leak_idx = df.loc[idx, f'xL{i}']
+			leak_idx = df.loc[idx, f'xind{i}']
 
-			leak_locs[leak_idx] = 1
-			leak_size[leak_idx] = df.loc[idx, f'CdAl{i}']
+			leak_locs[int(leak_idx)] = 1
+			leak_size[int(leak_idx)] = df.loc[idx, f'CdAl{i}']
 
 		holder_locs.append(tmp + leak_locs.tolist())
 		holder_size.append(tmp + leak_size.tolist())
@@ -37,5 +38,10 @@ def convert_to_sections(df, n_sections = 40, L =2000, max_n_leaks = 3):
 
 	cols = [f'X{i}' for i in range(50)] + [f'LS{j}' for j in range(n_sections)]
 	df_leak_size = pd.DataFrame(holder_size, columns = cols)
+
+	leak_info_cols = ['xL0', 'xL1', 'xL2', 'CdAl0', 'CdAl1', 'CdAl2']
+	for col in leak_info_cols:
+		df_leak_locs[col] = df[col].values
+		df_leak_size[col] = df[col].values
 
 	return df_leak_locs, df_leak_size

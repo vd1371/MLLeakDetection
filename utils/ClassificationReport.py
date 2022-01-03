@@ -10,19 +10,19 @@ def evaluate_classification(*args, **params):
     *args should be lists of [label,x , y, inds]
     '''
 
-    # direc = params.pop('direc')
-    model = params.pop('model', None)
-    model_name = params.pop('model_name')
-    logger = params.pop('logger')
-    slicer = params.pop('slicer', 1)
+    direc = params.get('direc')
+    model = params.get('model', None)
+    model_name = params.get('model_name')
+    logger = params.get('logger')
+    slicer = params.get('slicer', 1)
+    X = params.get("X")
 
     for ls in args:
 
-        if len(ls) == 4:
-            label, x, y_true, inds = ls
-            y_pred = model.predict(x)
         if len(ls) == 5:
             label, x, y_true, inds, y_pred = ls
+        elif len(ls) == 6:
+            label, x, y_true, inds, y_pred, info = ls
 
         logger.info(f"----------Classification Report for {model_name}-{label}------------\n" + \
                         str(classification_report(y_true, y_pred))+"\n")
@@ -35,11 +35,14 @@ def evaluate_classification(*args, **params):
         print (f'Accuracy score for {model_name}-{label}', round(accuracy_score(y_true, y_pred),4))
         print ("------------------------------------------------")
         
-        # report = pd.DataFrame()
-        # report['Actual'] = y_true
-        # report['Predicted'] = y_pred
-        # report['Ind'] = inds
-        # report.set_index('Ind', inplace=True)
-        # report.to_csv(direc + "/" + f'{model_name}-{label}.csv')
+        report = pd.DataFrame()
+        report['Actual'] = y_true
+        report['Predicted'] = y_pred
+        report['Ind'] = inds
+        for col in info.columns:
+            report[col] = info[col].values
+
+        report.set_index('Ind', inplace=True)
+        report.to_csv(direc + "/" + f'{model_name}-{label}.csv')
     
 

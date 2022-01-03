@@ -1,10 +1,9 @@
 from ._get_data import get_data
-from ._load_model import load_model
-from ._construct_model import _construct_model
 from ._get_call_backs import _get_call_backs
-from ._split_and_normalize_data import split_and_normalize_data
 from ._save_model import _save_model
-from .ClassificationReport import evaluate_classification
+
+from utils import split_and_normalize_data
+from utils import evaluate_classification
 
 from utils import Logger
 

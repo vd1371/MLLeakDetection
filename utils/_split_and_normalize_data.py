@@ -5,9 +5,10 @@ from sklearn.preprocessing import normalize
 
 def _normalize_row(df):
 
-	columns = df.columns
-	df = normalize(df, norm = 'l1', axis = 0)
-	df = pd.DataFrame(df, columns = columns)
+	tmp_holder = []
+	for idx, row in df.iterrows():
+		tmp_holder.append((row.values-row.min())/(row.max()-row.min()))
+	df = pd.DataFrame(tmp_holder, columns = df.columns, index = df.index)
 
 	return df
 
@@ -23,7 +24,7 @@ def _concat(df, input_dim):
 
 	return df
 
-def split_and_normalize_data(X, Y, **params):
+def split_and_normalize_data(X, Y, info, **params):
 
 	split_size = params.get('split_size')
 	random_state = params.get('random_state')
@@ -33,8 +34,8 @@ def split_and_normalize_data(X, Y, **params):
 	if verbose:
 		print ("Trying to split and normalize data")
 
-	X_train, X_test, Y_train, Y_test = \
-			train_test_split(X, Y,
+	X_train, X_test, Y_train, Y_test, info_train, info_test = \
+			train_test_split(X, Y, info,
 							test_size = split_size, 
 							shuffle = True,
 							random_state = random_state)
@@ -42,4 +43,4 @@ def split_and_normalize_data(X, Y, **params):
 	X_train = _concat(_normalize_row(X_train), input_dim)
 	X_test = _concat(_normalize_row(X_test), input_dim)
 	
-	return X_train, X_test, Y_train, Y_test
+	return X_train, X_test, Y_train, Y_test, info_train, info_test

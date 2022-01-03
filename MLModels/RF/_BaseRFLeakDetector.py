@@ -25,3 +25,4 @@ class BaseRFLeakDetector:
 		self.n_sections = params.get("n_sections")
 		self.input_dim = params.get("input_dim")
 		self.verbose = params.get("verbose")
+		self.split_size = params.get("split_size")

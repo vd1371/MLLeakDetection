@@ -31,14 +31,14 @@ def evaluate_regression(*args, **params):
 	x MUST be panda dataframe
 	y_true and y_pred must be list or 1d numpy array
 	'''
-	direc = params.pop('direc')
-	model = params.pop('model')
-	model_name = params.pop('model_name')
-	logger = params.pop('logger')
-	slicer = params.pop('slicer', 1)
-	should_check_hetero = params.pop('should_check_hetero', True)
-	should_log_inverse = params.pop('should_log_inverse', False)
-	ith_y = params.pop("ith_y", 0)
+	direc = params.get('direc')
+	model = params.get('model')
+	model_name = params.get('model_name')
+	logger = params.get('logger')
+	slicer = params.get('slicer', 1)
+	should_check_hetero = params.get('should_check_hetero', False)
+	should_log_inverse = params.get('should_log_inverse', False)
+	ith_y = params.get("ith_y", 0)
 
 	for ls in args:
 

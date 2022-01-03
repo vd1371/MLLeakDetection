@@ -3,6 +3,7 @@ from .RF import BaseRFLeakDetector
 from .RF import _log_hyperparameters
 from .RF import _construct_model
 from .RF import train_leak_locs
+from .RF import train_leak_size
 
 class RFLeakDetector(BaseRFLeakDetector):
 
