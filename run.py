@@ -1,9 +1,10 @@
+import os
+
 from LeakDataGenerator import *
 # from MLModels import DNNLeakDetector
 # from MLModels import RFLeakDetector
-# from MLModels import CatBoostLeakDetector
-
-# from utils import *
+from MLModels import CatBoostLeakDetector
+from Optimizer import Optimizer
 
 from WebUtils import *
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -11,26 +12,33 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 def run():
 
-	modelling_settings = {
-			  'data_directory' : './Data/',
-			  'report_directory': './reports/CatBoost-LeakLocs',
-			  'starting_batch' : 0,
-			  'n_batches' : 50,
-			  'batch_size_of_generator': 10000,
-			  'warm_up' : False,
-			  'method': 'offline',
-			  'verbose': True,
-			  'leak_pred': 'LeakLocs',
-			  'n_cores': 2,
-			  'batch_size_data': 1000,
-			  'N': 10000,
-			  'n_sections' : 40,
-			  'input_dim' : 50,
-			  'split_size': 0.2,}
+	pipe_and_leak_settings = {
+		  'n_sections' : 25,
+		  'max_n_leaks': 3,
+		  'sigma_noise': 0.05,
+		  'L': 2000,
+		  'max_omeg_num': 20}
+
+	general_settings = {
+	  'data_directory' : './Data/',
+	  'model': "CatBoost",
+	  'leak_pred': 'LeakLocs',
+	  # 'leak_pred': 'LeakSize',
+	  'starting_batch' : 0,
+	  'n_batches' : 3,
+	  'batch_size_of_generator': 1000,
+	  'method': 'offline',
+	  'verbose': True,
+	  'n_cores': 1,
+	  'input_dim' : pipe_and_leak_settings['max_omeg_num']*2,
+	  'split_size': 0.2,
+	  'random_seed' : 42,
+	}
 
 	## On the Generator Side
 	# Step 1: Run the generator
-	generate_data(**modelling_settings)
+	# generate_data(**{**general_settings,
+	# 					**pipe_and_leak_settings})
 
 	# Step 2: Start the Server
 	# run_server(server_class=HTTPServer,
@@ -55,11 +63,8 @@ def run():
 	# 		  'dropout' : 0.2,
 	# 		  'optimizer' : 'adam',
 	# 		  'random_state' : 165,
-	# 		  'split_size' : 0.2,
 	# 		  'output_dim' : 40,
 			  # 'directory' : './Reports/DNN/'}
-
-	
 
 	# myDNNLeakDetector = DNNLeakDetector(**{**DNN_settings,
 	# 										**modelling_settings})
@@ -81,17 +86,16 @@ def run():
 	# myRFLeakDetector.run()
 
 	# # Step 4-2: Training catboost
-	# cb_settings = {'iterations' : 1000,
+	# cb_settings = {'iterations' : 5000,
 	# 				'learning_rate' : 0.1,
 	# 				'depth' : 9,
 	# 				'l2_leaf_reg' : 0.001,
 	# 				'loss_function' : 'Logloss',
 	# 				# 'loss_function' : 'RMSE',
 	# 				'allow_writing_files' : False,
-	# 				# 'eval_metric' : "R2",
+	# 				# 'eval_metric' : "RMSE",
 	# 				'eval_metric' : "Accuracy",
 	# 				'task_type' : 'GPU',
-	# 				'random_seed' : 42,
 	# 				'verbose' : 400,
 	# 				'boosting_type' : 'Ordered',
 	# 				'thread_count' : -1,}
@@ -101,8 +105,24 @@ def run():
 	# myCatBoostLeakDetector._construct_model()
 	# myCatBoostLeakDetector.run()
 
+	# Step 5: Optimze
+	GA_settings = {	'n_samples': 5,
+					'crossver_prob': 0.75,
+					'mutation_prob' : 0.01,
+					'population_size' : 500,
+					'n_generations' : 500,
+					'n_elites' : 10}
+
+	myOptimizer = Optimizer(**{**general_settings,
+							**pipe_and_leak_settings,
+							**GA_settings})
+	myOptimizer.optimize()
+
+
 
 if __name__ == "__main__":
 	run()
+
+	# os.environ["CUDA_VISIBLE_DEVICES"]= "-1"
 
 	print ("Done")

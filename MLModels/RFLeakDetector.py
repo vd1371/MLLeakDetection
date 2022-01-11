@@ -1,11 +1,11 @@
 #Loading dependencies
-from .RF import BaseRFLeakDetector
+from .BaseMLModel import BaseMLModel
 from .RF import _log_hyperparameters
 from .RF import _construct_model
 from .RF import train_leak_locs
 from .RF import train_leak_size
 
-class RFLeakDetector(BaseRFLeakDetector):
+class RFLeakDetector(BaseMLModel):
 
 	def __init__(self, **params):
 		super().__init__(**params)

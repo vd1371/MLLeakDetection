@@ -1,10 +1,9 @@
-from ..get_data import _load_all_offline_data
+from utils import _load_all_offline_data
 from utils import split_and_normalize_data
 from utils import evaluate_classification
 
 def train_leak_locs(**params):
-
-	split_size = params.get('split_size')
+	
 	log = params.get("log")
 	model = params.get('model')
 	verbose = params.get('verbose')
@@ -13,7 +12,10 @@ def train_leak_locs(**params):
 	X, Y, info = _load_all_offline_data(**params)
 		
 	X_train, X_test, Y_train, Y_test, info_train, info_test = \
-		split_and_normalize_data(X, Y, info, **params)
+		split_and_normalize_data(X, Y,
+								info,
+								should_normalize = False,
+								**params)
 	dates_train = X_train.index
 	dates_test = X_test.index
 

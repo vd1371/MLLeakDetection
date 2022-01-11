@@ -1,11 +1,11 @@
 #Loading dependencies
 from .DNN import _log_hyperparameters
 from .DNN import _construct_model
-from .DNN import BaseDNNLeakDetector
+from .BaseMLModel import BaseMLModel
 from .DNN import train_leak_locs
 # from .TrainLeakSize import TrainLeakSize
 
-class DNNLeakDetector(BaseDNNLeakDetector):
+class DNNLeakDetector(BaseMLModel):
 
 	def __init__(self, **params):
 		super().__init__(**params)

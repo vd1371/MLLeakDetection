@@ -1,4 +1,4 @@
-from ..get_data import _load_all_offline_data
+from utils import _load_all_offline_data
 from utils import split_and_normalize_data
 from utils import evaluate_regression
 

@@ -9,19 +9,19 @@ from sklearn.metrics import mean_squared_error as MSE
 
 
 def MAPE(y_true, y_pred):
-    y_true = np.array(y_true)
-    y_pred = np.array(y_pred)
-    
-    if np.all(y_true):
-        return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
-    else:
-        return np.nan
+	y_true = np.array(y_true)
+	y_pred = np.array(y_pred)
+	
+	if np.all(y_true):
+		return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+	else:
+		return np.nan
 
 def R2(y_true, y_pred):
-    return np.corrcoef(y_true, y_pred)[0][1]**2
+	return np.corrcoef(y_true, y_pred)[0][1]**2
 
 def CorCoef(y_true, y_pred):
-    return np.corrcoef(y_true, y_pred)[0][1]
+	return np.corrcoef(y_true, y_pred)[0][1]
 
 def evaluate_regression(*args, **params):
 	'''Report classification results
@@ -42,7 +42,7 @@ def evaluate_regression(*args, **params):
 
 	for ls in args:
 
-		label, x, y_true, inds = ls
+		label, x, y_true, inds, info = ls
 		y_pred = model.predict(x)
 
 		#For the output of the DNN regression
@@ -59,6 +59,8 @@ def evaluate_regression(*args, **params):
 			report['Predicted'] = y_pred
 			report['Error'] = report['Actual'] - report['Predicted']
 			report['Ind'] = inds
+			for col in info.columns:
+				report[col] = info[col].values
 			report.set_index('Ind', inplace=True)
 			report.to_csv(direc + "/"+ f'{label}.csv')
 
