@@ -22,6 +22,12 @@ def _decode_solution(encoded_form, **params):
 		leak_size = _binary_to_num(size_binary, size_precision)
 		CdAl.append(leak_size)
 
-	return {'xL': sorted(xL),
+	zipped_lists = zip(xL, CdAl)
+	sorted_pairs = sorted(zipped_lists)
+
+	tuples = zip(*sorted_pairs)
+	xL, CdAl = [list(tup) for tup in  tuples]
+
+	return {'xL': xL,
 			'CdAl': np.array(CdAl)}
 
