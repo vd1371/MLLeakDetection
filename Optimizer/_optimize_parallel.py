@@ -36,6 +36,4 @@ def _optimize_parallel(data, **params):
 			if not sample is None:
 				holder.append(sample)
 
-	df = pd.concat(holder, axis = 0)
-
-	return df
+	return holder
