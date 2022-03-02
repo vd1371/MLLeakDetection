@@ -1,6 +1,7 @@
 
 
-def _report_accuracy_of_solutions(df, **params):
+def report_accuracy_of_solutions(df, **params):
+	pass
 	'''
 	TODO: The outcome of the optimization is a leak info
 	consisting of e.g., {'xL': [100, 200, 300],
@@ -10,4 +11,4 @@ def _report_accuracy_of_solutions(df, **params):
 	So, first, the optimization results need to be converted to sections
 	Then, the results of each section need to be treated as a classification.
 	'''
-	raise NotImplementedError ("Kept for MHK")
+	# raise NotImplementedError ("Kept for MHK")

@@ -8,7 +8,6 @@ def _load_all_offline_data(**params):
 	leak_pred = params.get("leak_pred")
 	verbose = params.get("verbose")
 	input_dim = params.get("input_dim")
-	n_sections = params.get("n_sections")
 
 	if verbose:
 		print ("Trying to load files...")

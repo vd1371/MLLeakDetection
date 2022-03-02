@@ -2,7 +2,7 @@ import os
 
 from LeakDataGenerator import *
 # from MLModels import DNNLeakDetector
-# from MLModels import RFLeakDetector
+from MLModels import RFLeakDetector
 from MLModels import CatBoostLeakDetector
 from Optimizer import Optimizer
 
@@ -26,10 +26,11 @@ def run():
 	  # 'leak_pred': 'LeakSize',
 	  'starting_batch' : 0,
 	  'n_batches' : 3,
+	  'n_sections' : 25,
 	  'batch_size_of_generator': 1000,
 	  'method': 'offline',
 	  'verbose': True,
-	  'n_cores': 1,
+	  'n_cores': 6,
 	  'input_dim' : pipe_and_leak_settings['max_omeg_num']*2,
 	  'split_size': 0.2,
 	  'random_seed' : 42,
@@ -67,7 +68,7 @@ def run():
 			  # 'directory' : './Reports/DNN/'}
 
 	# myDNNLeakDetector = DNNLeakDetector(**{**DNN_settings,
-	# 										**modelling_settings})
+	# 										**general_settings})
 	# myDNNLeakDetector._construct_model()
 	# myDNNLeakDetector.run()
 
@@ -81,12 +82,12 @@ def run():
 	# 				'n_jobs' : -1,}
 
 	# myRFLeakDetector = RFLeakDetector(**{**rf_settings,
-	# 									**modelling_settings})
+	# 									 **general_settings})
 	# myRFLeakDetector._construct_model()
 	# myRFLeakDetector.run()
 
 	# # Step 4-2: Training catboost
-	# cb_settings = {'iterations' : 5000,
+	# cb_settings = {'iterations' : 10,
 	# 				'learning_rate' : 0.1,
 	# 				'depth' : 9,
 	# 				'l2_leaf_reg' : 0.001,
@@ -95,18 +96,18 @@ def run():
 	# 				'allow_writing_files' : False,
 	# 				# 'eval_metric' : "RMSE",
 	# 				'eval_metric' : "Accuracy",
-	# 				'task_type' : 'GPU',
+	# 				'task_type' : 'CPU',
 	# 				'verbose' : 400,
 	# 				'boosting_type' : 'Ordered',
 	# 				'thread_count' : -1,}
 
 	# myCatBoostLeakDetector = CatBoostLeakDetector(**{**cb_settings,
-	# 	                                          **modelling_settings})
+	# 	                                          **general_settings})
 	# myCatBoostLeakDetector._construct_model()
 	# myCatBoostLeakDetector.run()
 
 	# Step 5: Optimze
-	GA_settings = {	'n_samples': 5,
+	GA_settings = {	'n_samples': 6,
 					'crossver_prob': 0.75,
 					'mutation_prob' : 0.01,
 					'population_size' : 500,

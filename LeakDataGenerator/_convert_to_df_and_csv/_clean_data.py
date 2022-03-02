@@ -3,7 +3,7 @@
 def clean_data(df):
 
 	# To get the length from the pipe chars
-	# L = list(set(df.loc[:, 'L']))[0]
+	# L = list(set(df.loc[:, 'L']))[0]	
 
 	df.drop(columns = ['L', "n_leaks", 'max_n_leaks', 'sound_speed',
 						'diameter', 'Area_of_pipe', "friction_parameter"],

@@ -1,5 +1,7 @@
 from ._optimize_linear import _optimize_linear
 from ._optimize_parallel import _optimize_parallel
+from ._save_solutions_to_csv import save_solutions_to_csv
+from ._report_accuracy_of_solutions import report_accuracy_of_solutions
 
 def optimize(data, **params):
 		

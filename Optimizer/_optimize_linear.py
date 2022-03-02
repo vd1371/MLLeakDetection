@@ -1,7 +1,7 @@
 from ._GA_tools import solve_sample_with_GA
 from ._convert_df_to_signals import _convert_df_to_signals
 
-def _optimize_linear(data, **params):
+def _optimize_linear(data, params, q_out = None):
 
 	signals, leak_in_sections, leak_info = data
 
@@ -19,4 +19,7 @@ def _optimize_linear(data, **params):
 
 		holder.append([sample_leak_info, sample_leak_in_sections, solution])
 
-	return holder
+	if q_out == None:
+		return holder
+	else:
+		q_out.put(holder)

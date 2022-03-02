@@ -1,11 +1,41 @@
+from ._optimize_linear import _optimize_linear
 
+import pandas as pd
+from multiprocessing import Queue, Process
+import multiprocessing as mp
 
 def _optimize_parallel(data, **params):
-	'''
-	Tips:
-	Seperate data into smaller pieces for each core
-	define each process as one _optimize_linear
-	pass the smaller data to the _optimize_linear function
-	collect all the holders and combine them
-	'''
-	raise NotImplementedError("Kept for MHK")
+
+	results_queue = Queue()
+	n_cores = mp.cpu_count()-2
+	l_batches = int(len(data[0])/n_cores)
+
+	pool = []
+	for j in range (n_cores):
+		tmp_data = (data[0].iloc[j*l_batches: min((j+1)*l_batches, len(data[0])),:],
+					data[1].iloc[j*l_batches: min((j+1)*l_batches, len(data[1])),:],
+					data[2].iloc[j*l_batches: min((j+1)*l_batches, len(data[2])),:])
+
+		worker = Process(target = _optimize_linear,
+							args = (tmp_data,
+									params,
+									results_queue,
+									))
+
+		pool.append(worker)
+
+	print('starting optimization processes...')
+	for worker in pool:
+		worker.start()
+
+	holder = []
+	while any(worker.is_alive() for worker in pool):
+		while not results_queue.empty():
+			sample = results_queue.get()
+
+			if not sample is None:
+				holder.append(sample)
+
+	df = pd.concat(holder, axis = 0)
+
+	return df
