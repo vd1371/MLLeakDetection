@@ -39,6 +39,7 @@ def evaluate_classification(*args, **params):
         report['Actual'] = y_true
         report['Predicted'] = y_pred
         report['Ind'] = inds
+        
         for col in info.columns:
             report[col] = info[col].values
 

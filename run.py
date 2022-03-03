@@ -21,7 +21,8 @@ def run():
 
 	general_settings = {
 	  'data_directory' : './Data/',
-	  'model': "CatBoost",
+	  'direc' : './reports',
+	  'model': "GA",
 	  'leak_pred': 'LeakLocs',
 	  # 'leak_pred': 'LeakSize',
 	  'starting_batch' : 0,
@@ -30,7 +31,7 @@ def run():
 	  'batch_size_of_generator': 1000,
 	  'method': 'offline',
 	  'verbose': True,
-	  'n_cores': 6,
+	  'n_cores': 1,
 	  'input_dim' : pipe_and_leak_settings['max_omeg_num']*2,
 	  'split_size': 0.2,
 	  'random_seed' : 42,
@@ -109,10 +110,10 @@ def run():
 	# Step 5: Optimze
 	GA_settings = {	'n_samples': 6,
 					'crossver_prob': 0.75,
-					'mutation_prob' : 0.01,
-					'population_size' : 500,
-					'n_generations' : 500,
-					'n_elites' : 10}
+					'mutation_prob' : 0.1,
+					'population_size' : 5,
+					'n_generations' : 5,
+					'n_elites' : 5}
 
 	myOptimizer = Optimizer(**{**general_settings,
 							**pipe_and_leak_settings,

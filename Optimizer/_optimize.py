@@ -8,7 +8,7 @@ def optimize(data, **params):
 	n_cores = params.get("n_cores")
 
 	if n_cores == 1:
-		holder_of_solutions_and_info = _optimize_linear(data, **params)
+		holder_of_solutions_and_info = _optimize_linear(data, params)
 	else:
 		holder_of_solutions_and_info = _optimize_parallel(data, **params)
 

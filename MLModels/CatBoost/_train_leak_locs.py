@@ -1,19 +1,13 @@
-from ..BaseMLModel import BaseMLModel
-
 from utils import _load_all_offline_data
 from utils import split_and_normalize_data
 from utils import evaluate_classification
-from utils import Logger
-
-import os
-import pprint
 
 def train_leak_locs(**params):
 	
 	log = params.get("log")
 	model = params.get('model')
 	verbose = params.get('verbose')
-	direc = params.get("report_directory")
+	direc = params.get('direc')
 
 	X, Y, info = _load_all_offline_data(**params)
 		
