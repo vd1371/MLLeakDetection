@@ -21,8 +21,6 @@ def run():
 
 	general_settings = {
 	  'data_directory' : './Data/',
-	  'direc' : './reports',
-	  'model': "GA",
 	  'leak_pred': 'LeakLocs',
 	  # 'leak_pred': 'LeakSize',
 	  'starting_batch' : 0,
@@ -66,7 +64,8 @@ def run():
 	# 		  'optimizer' : 'adam',
 	# 		  'random_state' : 165,
 	# 		  'output_dim' : 40,
-			  # 'directory' : './Reports/DNN/'}
+	#		  'directory' : './Reports/DNN/',
+	#		  'model': "DNN",}
 
 	# myDNNLeakDetector = DNNLeakDetector(**{**DNN_settings,
 	# 										**general_settings})
@@ -80,7 +79,8 @@ def run():
 	# 				'min_samples_leaf' : 1,
 	# 				'max_features' : 'auto',
 	# 				'should_cross_val' : False,
-	# 				'n_jobs' : -1,}
+	# 				'n_jobs' : -1,
+					# 'model': "RF",}
 
 	# myRFLeakDetector = RFLeakDetector(**{**rf_settings,
 	# 									 **general_settings})
@@ -100,7 +100,8 @@ def run():
 	# 				'task_type' : 'CPU',
 	# 				'verbose' : 400,
 	# 				'boosting_type' : 'Ordered',
-	# 				'thread_count' : -1,}
+	# 				'thread_count' : -1,
+					# 'model': "CatBoost",}
 
 	# myCatBoostLeakDetector = CatBoostLeakDetector(**{**cb_settings,
 	# 	                                          **general_settings})
@@ -113,7 +114,8 @@ def run():
 					'mutation_prob' : 0.1,
 					'population_size' : 5,
 					'n_generations' : 5,
-					'n_elites' : 5}
+					'n_elites' : 5,
+					'model': "GA",}
 
 	myOptimizer = Optimizer(**{**general_settings,
 							**pipe_and_leak_settings,
