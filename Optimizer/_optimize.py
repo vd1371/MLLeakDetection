@@ -11,6 +11,7 @@ def optimize(data, **params):
 		holder_of_solutions_and_info = _optimize_linear(data, params)
 	else:
 		holder_of_solutions_and_info = _optimize_parallel(data, **params)
+	
 
 	df = save_solutions_to_csv(holder_of_solutions_and_info, **params)
 	report_accuracy_of_solutions(df, **params)

@@ -29,7 +29,7 @@ def run():
 	  'batch_size_of_generator': 1000,
 	  'method': 'offline',
 	  'verbose': True,
-	  'n_cores': 1,
+	  'n_cores': 2,
 	  'input_dim' : pipe_and_leak_settings['max_omeg_num']*2,
 	  'split_size': 0.2,
 	  'random_seed' : 42,
@@ -65,7 +65,7 @@ def run():
 	# 		  'random_state' : 165,
 	# 		  'output_dim' : 40,
 	#		  'directory' : './Reports/DNN/',
-	#		  'model': "DNN",}
+	#		  'model_name': "DNN",}
 
 	# myDNNLeakDetector = DNNLeakDetector(**{**DNN_settings,
 	# 										**general_settings})
@@ -80,7 +80,7 @@ def run():
 	# 				'max_features' : 'auto',
 	# 				'should_cross_val' : False,
 	# 				'n_jobs' : -1,
-					# 'model': "RF",}
+					# 'model_name': "RF",}
 
 	# myRFLeakDetector = RFLeakDetector(**{**rf_settings,
 	# 									 **general_settings})
@@ -101,7 +101,7 @@ def run():
 	# 				'verbose' : 400,
 	# 				'boosting_type' : 'Ordered',
 	# 				'thread_count' : -1,
-					# 'model': "CatBoost",}
+					# 'model_name': "CatBoost",}
 
 	# myCatBoostLeakDetector = CatBoostLeakDetector(**{**cb_settings,
 	# 	                                          **general_settings})

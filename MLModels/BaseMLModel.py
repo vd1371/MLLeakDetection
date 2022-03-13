@@ -11,12 +11,12 @@ class BaseMLModel:
 
 		now = datetime.now().strftime("%Y%m%d%H%M")
 		self.report_directory = \
-			os.path.join(".", 'reports', self.model, f"{self.leak_pred}-{now}")
+			os.path.join(".", 'reports', self.model_name, f"{self.leak_pred}-{now}")
 		if not os.path.exists(self.report_directory):
 			os.makedirs(self.report_directory)
 		self.log = Logger(address = f"{self.report_directory}/Log.log")
 
-		if self.model == "DNN":
+		if self.model_name == "DNN":
 			from tensorflow.keras.regularizers import l1, l2
 
 			self.l = l2 if self.regul_type == 'l2' else l1

@@ -17,8 +17,3 @@ def _load_data_for_optimization(**params):
 	info_test = info_test.iloc[:n_samples, :]
 
 	return X_test, Y_test, info_test
-
-
-
-
-

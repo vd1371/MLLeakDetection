@@ -1,6 +1,7 @@
 from ._optimize_linear import _optimize_linear
 
 import pandas as pd
+import itertools
 from multiprocessing import Queue, Process
 import multiprocessing as mp
 
@@ -36,4 +37,6 @@ def _optimize_parallel(data, **params):
 			if not sample is None:
 				holder.append(sample)
 
-	return holder[0]
+	holder = list(itertools.chain(*holder))
+
+	return holder
