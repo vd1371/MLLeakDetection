@@ -15,6 +15,6 @@ class BaseOptimizer:
 								f"{self.leak_pred}-{now}")
 		if not os.path.exists(self.report_directory):
 			os.makedirs(self.report_directory)
-		self.log = Logger(address = f"{self.report_directory}/Log.log")
+		self.logger = Logger(address = f"{self.report_directory}/Log.log")
 
-		self.log.info(pprint.pformat(self.__dict__))
+		self.logger.info(pprint.pformat(self.__dict__))

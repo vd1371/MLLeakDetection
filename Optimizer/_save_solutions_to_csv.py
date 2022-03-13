@@ -7,7 +7,7 @@ def save_solutions_to_csv(holder_of_solutions_and_info, **params):
     report_directory = params.get("report_directory")
     n_sections = params.get("n_sections")
     L = params.get("L")
-    model = params.get("model")
+    model_name = params.get("model_name")
     leak_pred = params.get("leak_pred")
     max_n_leaks = params.get("max_n_leaks")
 
@@ -70,4 +70,6 @@ def save_solutions_to_csv(holder_of_solutions_and_info, **params):
 
     report = pd.concat([report_act, report_pred, report_xl, report_cdal], axis=1)
 
-    report.to_csv(report_directory + "/" + f'{model}-{leak_pred}.csv', index=False)
+    report.to_csv(report_directory + "/" + f'{model_name}-{leak_pred}.csv', index=False)
+
+    return report

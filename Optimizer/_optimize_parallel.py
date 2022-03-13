@@ -36,4 +36,4 @@ def _optimize_parallel(data, **params):
 			if not sample is None:
 				holder.append(sample)
 
-	return holder
+	return holder[0]

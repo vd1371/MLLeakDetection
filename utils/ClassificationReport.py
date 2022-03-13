@@ -10,12 +10,9 @@ def evaluate_classification(*args, **params):
     *args should be lists of [label,x , y, inds]
     '''
 
-    direc = params.get('direc')
-    model = params.get('model', None)
+    report_directory = params.get('report_directory')
     model_name = params.get('model_name')
     logger = params.get('logger')
-    slicer = params.get('slicer', 1)
-    X = params.get("X")
 
     for ls in args:
 
@@ -44,6 +41,5 @@ def evaluate_classification(*args, **params):
             report[col] = info[col].values
 
         report.set_index('Ind', inplace=True)
-        report.to_csv(direc + "/" + f'{model_name}-{label}.csv')
+        report.to_csv(report_directory + "/" + f'{model_name}-{label}.csv')
     
-

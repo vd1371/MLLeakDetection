@@ -115,7 +115,7 @@ def run():
 					'population_size' : 5,
 					'n_generations' : 5,
 					'n_elites' : 5,
-					'model': "GA",}
+					'model_name': "GA",}
 
 	myOptimizer = Optimizer(**{**general_settings,
 							**pipe_and_leak_settings,
