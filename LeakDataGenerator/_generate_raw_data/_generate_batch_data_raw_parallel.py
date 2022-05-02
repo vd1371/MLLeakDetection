@@ -5,6 +5,8 @@ import multiprocessing as mp
 
 def _generate_batch_data_raw_parallel(**params):
 	batch_size_of_generator = params.get('batch_size_of_generator')
+	max_n_leaks = params.get('max_n_leaks')
+	L = params.get('L')
 
 	results_queue = Queue()
 	n_cores = mp.cpu_count()-2
@@ -13,7 +15,9 @@ def _generate_batch_data_raw_parallel(**params):
 	pool = []
 	for j in range (n_cores):
 		worker = Process(target = _go_crazy, args = (results_queue,
-													N_for_each_core, ))
+													N_for_each_core,
+													max_n_leaks,
+													L, ))
 
 		pool.append(worker)
 

@@ -3,10 +3,9 @@ import numpy as np
 
 def generate_random_features(random_location = True,
 							random_size = True,
+							max_n_leaks = 3,
+							L = 2000,
 							**params):
-
-	max_n_leaks = params.get("max_n_leaks")
-	L = params.get("L")
 
 	# location of leaks: two leaks far away from each other
 	if random_location:

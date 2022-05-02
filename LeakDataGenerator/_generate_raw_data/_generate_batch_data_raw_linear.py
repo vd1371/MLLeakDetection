@@ -13,7 +13,7 @@ def _generate_batch_data_raw_linear(**params):
 									**params})
 		holder.append(h_d_data)
 
-		if i % 1000 == 0 and verbose:
-			print (f"{i} samples are generated now")
+		# if i % 1000 == 0 and verbose:
+		# 	print (f"{i} samples are generated now")
 	
 	return holder
