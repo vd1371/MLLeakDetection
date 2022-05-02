@@ -17,5 +17,5 @@ class CatBoostLeakDetector(BaseMLModel):
 	def run(self, *args, **kwargs):		
 		if self.leak_pred == 'LeakLocs':
 			train_leak_locs(**self.__dict__)
-		else:
+		elif self.leak_pred == 'LeakSize':
 			train_leak_size(**self.__dict__)

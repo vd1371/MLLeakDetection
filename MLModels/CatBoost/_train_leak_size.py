@@ -4,11 +4,11 @@ from utils import evaluate_regression
 
 def train_leak_size(**params):
 
-	split_size = params.get('split_size')
 	log = params.get("log")
 	model = params.get('model')
+	model_name = params.get("model_name")
 	verbose = params.get('verbose')
-	direc = params.get("report_directory")
+	report_directory = params.get('report_directory')
 
 	X, Y, info = _load_all_offline_data(**params)
 		
@@ -32,10 +32,9 @@ def train_leak_size(**params):
 	y_pred_test = model.predict(X_test)
 
 	evaluate_regression(
-		[f'OnTrain-LeakSize', X_train, Y_train, dates_train, info_train],
-		[f'OnTest-LeakSize', X_test, Y_test, dates_test, info_test],
+		[f'OnTrain-LeakSize', X_train, Y_train, dates_train, y_pred_train, info_train],
+		[f'OnTest-LeakSize', X_test, Y_test, dates_test, y_pred_test, info_test],
 		model = model,
-		model_name = f"CatBoost",
+		model_name = model_name,
 		logger = log,
-		slicer = 1,
-		direc = direc)
+		report_directory = report_directory)

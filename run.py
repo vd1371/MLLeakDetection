@@ -21,8 +21,8 @@ def run():
 
 	general_settings = {
 	  'data_directory' : './Data/',
-	  'leak_pred': 'LeakLocs',
-	  # 'leak_pred': 'LeakSize',
+	  # 'leak_pred': 'LeakLocs',
+	  'leak_pred': 'LeakSize',
 	  'starting_batch' : 0,
 	  'n_batches' : 20,
 	  'n_sections' : 25,
@@ -88,25 +88,25 @@ def run():
 	# myRFLeakDetector.run()
 
 	# # Step 4-2: Training catboost
-	# cb_settings = {'iterations' : 10,
-	# 				'learning_rate' : 0.1,
-	# 				'depth' : 2,
-	# 				'l2_leaf_reg' : 0.001,
-	# 				'loss_function' : 'Logloss',
-	# 				# 'loss_function' : 'RMSE',
-	# 				'allow_writing_files' : False,
-	# 				# 'eval_metric' : "RMSE",
-	# 				'eval_metric' : "Accuracy",
-	# 				'task_type' : 'CPU',
-	# 				'verbose' : 400,
-	# 				'boosting_type' : 'Ordered',
-	# 				'thread_count' : -1,
-	# 				'model_name': "CatBoost",}
+	cb_settings = {'iterations' : 10,
+					'learning_rate' : 0.1,
+					'depth' : 2,
+					'l2_leaf_reg' : 0.001,
+					# 'loss_function' : 'Logloss',
+					'loss_function' : 'RMSE',
+					'allow_writing_files' : False,
+					'eval_metric' : "RMSE",
+					# 'eval_metric' : "Accuracy",
+					'task_type' : 'CPU',
+					'verbose' : 400,
+					'boosting_type' : 'Ordered',
+					'thread_count' : -1,
+					'model_name': "CatBoost",}
 
-	# myCatBoostLeakDetector = CatBoostLeakDetector(**{**cb_settings,
-	# 	                                          **general_settings})
-	# myCatBoostLeakDetector._construct_model()
-	# myCatBoostLeakDetector.run()
+	myCatBoostLeakDetector = CatBoostLeakDetector(**{**cb_settings,
+		                                          **general_settings})
+	myCatBoostLeakDetector._construct_model()
+	myCatBoostLeakDetector.run()
 
 	# Step 5: Optimze
 	# GA_settings = {	'n_samples': 6,
