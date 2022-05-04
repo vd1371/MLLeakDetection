@@ -18,6 +18,9 @@ def _load_all_offline_data(**params):
 			data = pd.read_csv(f"{data_directory}/{file_name}", index_col = 0)
 			holder.append(data)
 
+			# if len(holder) > 0:
+			# 	break
+
 	data = pd.concat(holder, axis = 0)
 
 	X = data.iloc[:, :input_dim]

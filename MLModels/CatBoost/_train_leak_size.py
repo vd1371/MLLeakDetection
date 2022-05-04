@@ -9,9 +9,18 @@ def train_leak_size(**params):
 	model_name = params.get("model_name")
 	verbose = params.get('verbose')
 	report_directory = params.get('report_directory')
+	leak_pred = params.get("leak_pred")
 
 	X, Y, info = _load_all_offline_data(**params)
-		
+	
+	section_number = 1
+
+	if leak_pred == "LeakSize":
+		mask = Y.iloc[:, section_number] > 0
+		X = X.loc[mask, :]
+		Y = Y.loc[mask, :]
+		info = info.loc[mask, :]
+
 	X_train, X_test, Y_train, Y_test, info_train, info_test = \
 		split_and_normalize_data(X, Y,
 								info,
@@ -20,8 +29,8 @@ def train_leak_size(**params):
 	dates_train = X_train.index
 	dates_test = X_test.index
 
-	Y_train = Y_train.iloc[:, 0]
-	Y_test = Y_test.iloc[:, 0]
+	Y_train = Y_train.iloc[:, section_number]
+	Y_test = Y_test.iloc[:, section_number]
 
 	if verbose:
 		print ("Trying to fit to the data...")
