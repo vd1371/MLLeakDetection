@@ -6,10 +6,12 @@ import multiprocessing as mp
 def _generate_batch_data_raw_parallel(**params):
 	batch_size_of_generator = params.get('batch_size_of_generator')
 	max_n_leaks = params.get('max_n_leaks')
+	n_cores = params.get("n_cores")
+	max_omeg_num = params.get("max_omeg_num")
+	sigma_noise = params.get("sigma_noise")
 	L = params.get('L')
 
 	results_queue = Queue()
-	n_cores = mp.cpu_count()-2
 	N_for_each_core = int(batch_size_of_generator/n_cores)
 
 	pool = []
@@ -17,7 +19,10 @@ def _generate_batch_data_raw_parallel(**params):
 		worker = Process(target = _go_crazy, args = (results_queue,
 													N_for_each_core,
 													max_n_leaks,
-													L, ))
+													L,
+													max_omeg_num,
+													sigma_noise,
+													))
 
 		pool.append(worker)
 
@@ -29,9 +34,8 @@ def _generate_batch_data_raw_parallel(**params):
 	while any(worker.is_alive() for worker in pool):
 		while not results_queue.empty():
 			sample = results_queue.get()
-
 			if not sample is None:
-				holder.append(sample)
+				holder += sample
 
 	print('finishing processes...')
 	for worker in pool:
