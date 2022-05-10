@@ -37,3 +37,10 @@ def train_leak_locs(**params):
 		model_name = model_name,
 		logger = log,
 		report_directory = report_directory)
+
+	for noise in range(0, 1, 2, 5, 10, 15, 20):
+
+		## ADD noise to X_test
+		## Find the metrics of the noisy test set
+
+	## Save the report as a csv file
