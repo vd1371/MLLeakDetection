@@ -55,7 +55,8 @@ def train_leak_locs(**params):
 	    	y_pred_test_noise = model.predict(X_test_noise)
 
 	    	df_noise.loc[i,'noise'] = noise
-	    	df_noise.loc[i,'acc'], df_noise.loc[i,'f1'] = accuracy_score(Y_test, y_pred_test_noise), f1_score(Y_test, y_pred_test_noise)
+	    	df_noise.loc[i,'acc'], df_noise.loc[i,'f1'] = \
+	    		accuracy_score(Y_test, y_pred_test_noise)*100, f1_score(Y_test, y_pred_test_noise)*100
 
 	    	evaluate_classification(
 				[f'OnTrain-LeakLocs', X_train, Y_train, dates_train, y_pred_train, info_train],

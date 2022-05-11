@@ -89,9 +89,9 @@ def run():
 	# myRFLeakDetector.run()
 
 	# Step 4-2: Training catboost
-	cb_settings = {'iterations' : 200,
+	cb_settings = {'iterations' : 1000,
 					'learning_rate' : 0.1,
-					'depth' : 2,
+					'depth' : 8,
 					'l2_leaf_reg' : 0.001,
 					# 'loss_function' : 'Logloss',
 					'loss_function' : 'RMSE',
