@@ -13,7 +13,9 @@ def evaluate_classification(*args, **params):
     report_directory = params.get('report_directory')
     model_name = params.get('model_name')
     logger = params.get('logger')
+    noises = params.get('noises')
 
+    counter = 0
     for ls in args:
 
         if len(ls) == 5:
@@ -41,5 +43,4 @@ def evaluate_classification(*args, **params):
             report[col] = info[col].values
 
         report.set_index('Ind', inplace=True)
-        report.to_csv(report_directory + "/" + f'{model_name}-{label}.csv')
-    
+        report.to_csv(report_directory + "/" + f'{model_name}-{label}.csv') 

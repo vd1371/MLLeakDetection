@@ -4,7 +4,7 @@ from LeakDataGenerator import *
 # from MLModels import DNNLeakDetector
 # from MLModels import RFLeakDetector
 from MLModels import CatBoostLeakDetector
-from Optimizer import Optimizer
+# from Optimizer import Optimizer
 
 # from WebUtils import *
 # from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -15,21 +15,22 @@ def run():
 	pipe_and_leak_settings = {
 		  'n_sections' : 25,
 		  'max_n_leaks': 3,
-		  'sigma_noise': 0.00,
+		  'sigma_noise': 0.01,
 		  'L': 2000,
 		  'max_omeg_num': 20}
 
 	general_settings = {
 	  'data_directory' : './Data/',
+	  # 'leak_pred': 'LeakLocs',
 	  'leak_pred': 'LeakSize',
-	  # 'leak_pred': 'LeakSize',
 	  'starting_batch' : 0,
-	  'n_batches' : 20,
+	  "noises":[1,2,5,10,15,20],
+	  'n_batches' : 1,
 	  'n_sections' : 25,
 	  'batch_size_of_generator': 1000,
 	  'method': 'offline',
 	  'verbose': True,
-	  'n_cores': 1,
+	  'n_cores': 6,
 	  'input_dim' : pipe_and_leak_settings['max_omeg_num']*2,
 	  'split_size': 0.2,
 	  'random_seed' : 42,
@@ -87,10 +88,10 @@ def run():
 	# myRFLeakDetector._construct_model()
 	# myRFLeakDetector.run()
 
-	# # Step 4-2: Training catboost
-	cb_settings = {'iterations' : 1000,
+	# Step 4-2: Training catboost
+	cb_settings = {'iterations' : 200,
 					'learning_rate' : 0.1,
-					'depth' : 8,
+					'depth' : 2,
 					'l2_leaf_reg' : 0.001,
 					# 'loss_function' : 'Logloss',
 					'loss_function' : 'RMSE',

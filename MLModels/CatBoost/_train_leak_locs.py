@@ -1,3 +1,8 @@
+import pandas as pd
+import numpy as np
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+
 from utils import _load_all_offline_data
 from utils import split_and_normalize_data
 from utils import evaluate_classification
@@ -9,6 +14,7 @@ def train_leak_locs(**params):
 	model_name = params.get("model_name")
 	verbose = params.get('verbose')
 	report_directory = params.get('report_directory')
+	noises = params.get("noises")
 
 	X, Y, info = _load_all_offline_data(**params)
 		
@@ -32,15 +38,43 @@ def train_leak_locs(**params):
 	y_pred_test = model.predict(X_test)
 
 	evaluate_classification(
-		[f'OnTrain-LeakLocs', X_train, Y_train, dates_train, y_pred_train, info_train],
-		[f'OnTest-LeakLocs', X_test, Y_test, dates_test, y_pred_test, info_test],
-		model_name = model_name,
-		logger = log,
-		report_directory = report_directory)
+			[f'OnTrain-LeakLocs', X_train, Y_train, dates_train, y_pred_train, info_train],
+			[f'OnTest-LeakLocs', X_test, Y_test, dates_test, y_pred_test, info_test],
+			model_name = model_name,
+			logger = log,
+			report_directory = report_directory)
 
-	for noise in range(0, 1, 2, 5, 10, 15, 20):
+	if len(noises) > 1:
+	    df_noise = pd.DataFrame(columns=['noise','acc','f1'])
+	    for i, noise in enumerate(noises):
+	        df_noise.loc[i,'noise'] = noise
 
-		## ADD noise to X_test
-		## Find the metrics of the noisy test set
+	    for i, noise in enumerate(noises):
+	    	noise_vector = np.random.normal(0, noise, (X_test.shape[0], X_test.shape[1]))
+	    	X_test_noise = pd.DataFrame(np.add(np.array(X_test), noise_vector), columns = X_test.columns)
+	    	y_pred_test_noise = model.predict(X_test_noise)
 
-	## Save the report as a csv file
+	    	df_noise.loc[i,'noise'] = noise
+	    	df_noise.loc[i,'acc'], df_noise.loc[i,'f1'] = accuracy_score(Y_test, y_pred_test_noise), f1_score(Y_test, y_pred_test_noise)
+
+	    	evaluate_classification(
+				[f'OnTrain-LeakLocs', X_train, Y_train, dates_train, y_pred_train, info_train],
+				[f'OnTest-LeakLocs-noise-{noise}', X_test_noise, Y_test, dates_test, y_pred_test_noise, info_test],
+				model_name = model_name,
+				logger = log,
+				report_directory = report_directory)
+
+	    	del noise_vector, X_test_noise, y_pred_test_noise
+
+	    df_noise.to_csv(report_directory + "/" + f'{model_name}-LeakLocs-noise.csv', index=False)
+
+
+
+
+
+	# for noise in range(0, 1, 2, 5, 10, 15, 20):
+
+		# ADD noise to X_test
+		# Find the metrics of the noisy test set
+
+	# Save the report as a csv file
