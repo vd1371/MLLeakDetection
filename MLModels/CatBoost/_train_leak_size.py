@@ -48,58 +48,32 @@ def train_leak_size(**params):
 
 	model.fit(X_train, Y_train)
 
-	y_pred_train = model.predict(X_train)
-	y_pred_test = model.predict(X_test)
+	if not noises:
+		y_pred_train = model.predict(X_train)
+		y_pred_test = model.predict(X_test)
 
-	evaluate_regression(
-		[f'OnTrain-LeakSize', X_train, Y_train, dates_train, y_pred_train, info_train],
-		[f'OnTest-LeakSize', X_test, Y_test, dates_test, y_pred_test, info_test],
-		model = model,
-		model_name = model_name,
-		logger = log,
-		report_directory = report_directory)
+		evaluate_regression(
+			[f'OnTrain-LeakSize', X_train, Y_train, dates_train, y_pred_train, info_train],
+			[f'OnTest-LeakSize', X_test, Y_test, dates_test, y_pred_test, info_test],
+			model = model,
+			model_name = model_name,
+			logger = log,
+			report_directory = report_directory)
 
-	if len(noises) > 1:
-	    df_noise = pd.DataFrame(columns=['noise','rmse','r2'])
-	    for i, noise in enumerate(noises):
-	        df_noise.loc[i,'noise'] = noise
+	else:
 
-	    for i, noise in enumerate(noises):
-	    	noise_vector = np.random.normal(0, noise, (X_test.shape[0], X_test.shape[1]))
-	    	X_test_noise = pd.DataFrame(np.add(np.array(X_test), noise_vector), columns = X_test.columns)
-	    	y_pred_test_noise = model.predict(X_test_noise)
+		all_samples = []
+		for i, noise in enumerate(noises):
+			noise_vector = 1 + np.random.normal(0, noise, X_test.shape)/100
 
-	    	df_noise.loc[i,'noise'] = noise
-	    	df_noise.loc[i,'rmse'], df_noise.loc[i,'r2'] = \
-	    		MSE(Y_test, y_pred_test_noise)**0.5, R2(Y_test, y_pred_test_noise)
+			X_test_noisy = np.multiply(X_test, noise_vector)
 
-	    	evaluate_regression(
-				[f'OnTrain-LeakSize', X_train, Y_train, dates_train, y_pred_train, info_train],
-				[f'OnTest-LeakSize-noise-{noise}', X_test_noise, Y_test, dates_test, y_pred_test_noise, info_test],
-				model_name = model_name,
-				logger = log,
-				report_directory = report_directory)
+			y_pred_test_noisy = model.predict(X_test_noisy)
 
-	    	del noise_vector, X_test_noise, y_pred_test_noise
+			all_samples.append([noise,
+								MSE(Y_test, y_pred_test_noisy)**0.5,
+								R2(Y_test, y_pred_test_noisy)])
 
-	    df_noise.to_csv(report_directory + "/" + f'{model_name}-LeakSize-noise.csv', index=False)
-
-
-
-
-
-
-
-	# for noise in noises:
-	# 	noise_vector = np.random.normal(0, noise, (X_test.shape[0], X_test.shape[1]))
-	# 	X_test_noise = pd.DataFrame(np.add(np.array(X_test), noise_vector), columns = X_test.columns)
-	# 	y_pred_test_noise = model.predict(X_test_noise)		
-
-	# 	evaluate_regression(
-	# 		[f'OnTrain-LeakSize', X_train, Y_train, dates_train, y_pred_train, info_train],
-	# 		[f'OnTest-LeakSize-noise-{noise}', X_test_noise, Y_test, dates_test, y_pred_test_noise, info_test],
-	# 		model_name = model_name,
-	# 		logger = log,
-	# 		report_directory = report_directory)
-
-	# 	del noise_vector, X_test_noise, y_pred_test_noise
+		noisy_reults = pd.DataFrame(all_samples, columns = ['noise','rmse','r2'])	
+		noisy_reults.to_csv(report_directory + "/" + f'{model_name}-LeakSize-noise.csv',
+							index=False)

@@ -4,10 +4,7 @@ from LeakDataGenerator import *
 # from MLModels import DNNLeakDetector
 # from MLModels import RFLeakDetector
 from MLModels import CatBoostLeakDetector
-# from Optimizer import Optimizer
-
-# from WebUtils import *
-# from http.server import BaseHTTPRequestHandler, HTTPServer
+from Optimizer import Optimizer
 
 
 def run():
@@ -89,39 +86,39 @@ def run():
 	# myRFLeakDetector.run()
 
 	# Step 4-2: Training catboost
-	cb_settings = {'iterations' : 1000,
-					'learning_rate' : 0.1,
-					'depth' : 8,
-					'l2_leaf_reg' : 0.001,
-					# 'loss_function' : 'Logloss',
-					'loss_function' : 'RMSE',
-					'allow_writing_files' : False,
-					# 'eval_metric' : "Accuracy",
-					'eval_metric' : "RMSE",
-					'task_type' : 'CPU',
-					'verbose' : 400,
-					'boosting_type' : 'Ordered',
-					'thread_count' : -1,
-					'model_name': "CatBoost",}
+	# cb_settings = {'iterations' : 1000,
+	# 				'learning_rate' : 0.1,
+	# 				'depth' : 8,
+	# 				'l2_leaf_reg' : 0.001,
+	# 				# 'loss_function' : 'Logloss',
+	# 				'loss_function' : 'RMSE',
+	# 				'allow_writing_files' : False,
+	# 				# 'eval_metric' : "Accuracy",
+	# 				'eval_metric' : "RMSE",
+	# 				'task_type' : 'CPU',
+	# 				'verbose' : 400,
+	# 				'boosting_type' : 'Ordered',
+	# 				'thread_count' : -1,
+	# 				'model_name': "CatBoost",}
 
-	myCatBoostLeakDetector = CatBoostLeakDetector(**{**cb_settings,
-		                                          **general_settings})
-	myCatBoostLeakDetector._construct_model()
-	myCatBoostLeakDetector.run()
+	# myCatBoostLeakDetector = CatBoostLeakDetector(**{**cb_settings,
+	# 	                                          **general_settings})
+	# myCatBoostLeakDetector._construct_model()
+	# myCatBoostLeakDetector.run()
 
 	# Step 5: Optimze
-	# GA_settings = {	'n_samples': 6,
-	# 				'crossver_prob': 0.75,
-	# 				'mutation_prob' : 0.1,
-	# 				'population_size' : 5,
-	# 				'n_generations' : 5,
-	# 				'n_elites' : 5,
-	# 				'model_name': "GA",}
+	GA_settings = {	'n_samples': 20,
+					'crossver_prob': 0.75,
+					'mutation_prob' : 0.1,
+					'population_size' : 10,
+					'n_generations' : 5,
+					'n_elites' : 5,
+					'model_name': "GA",}
 
-	# myOptimizer = Optimizer(**{**general_settings,
-	# 						**pipe_and_leak_settings,
-	# 						**GA_settings})
-	# myOptimizer.optimize()
+	myOptimizer = Optimizer(**{**general_settings,
+							**pipe_and_leak_settings,
+							**GA_settings})
+	myOptimizer.optimize()
 
 
 

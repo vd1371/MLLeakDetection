@@ -34,48 +34,32 @@ def train_leak_locs(**params):
 
 	model.fit(X_train, Y_train)
 
-	y_pred_train = model.predict(X_train)
-	y_pred_test = model.predict(X_test)
 
-	evaluate_classification(
-			[f'OnTrain-LeakLocs', X_train, Y_train, dates_train, y_pred_train, info_train],
-			[f'OnTest-LeakLocs', X_test, Y_test, dates_test, y_pred_test, info_test],
-			model_name = model_name,
-			logger = log,
-			report_directory = report_directory)
+	if not noises:
+		y_pred_train = model.predict(X_train)
+		y_pred_test = model.predict(X_test)
 
-	if len(noises) > 1:
-	    df_noise = pd.DataFrame(columns=['noise','acc','f1'])
-	    for i, noise in enumerate(noises):
-	        df_noise.loc[i,'noise'] = noise
-
-	    for i, noise in enumerate(noises):
-	    	noise_vector = np.random.normal(0, noise, (X_test.shape[0], X_test.shape[1]))
-	    	X_test_noise = pd.DataFrame(np.add(np.array(X_test), noise_vector), columns = X_test.columns)
-	    	y_pred_test_noise = model.predict(X_test_noise)
-
-	    	df_noise.loc[i,'noise'] = noise
-	    	df_noise.loc[i,'acc'], df_noise.loc[i,'f1'] = \
-	    		accuracy_score(Y_test, y_pred_test_noise)*100, f1_score(Y_test, y_pred_test_noise)*100
-
-	    	evaluate_classification(
+		evaluate_classification(
 				[f'OnTrain-LeakLocs', X_train, Y_train, dates_train, y_pred_train, info_train],
-				[f'OnTest-LeakLocs-noise-{noise}', X_test_noise, Y_test, dates_test, y_pred_test_noise, info_test],
+				[f'OnTest-LeakLocs', X_test, Y_test, dates_test, y_pred_test, info_test],
 				model_name = model_name,
 				logger = log,
 				report_directory = report_directory)
 
-	    	del noise_vector, X_test_noise, y_pred_test_noise
+	else:
 
-	    df_noise.to_csv(report_directory + "/" + f'{model_name}-LeakLocs-noise.csv', index=False)
+		all_samples = []
+		for i, noise in enumerate(noises):
+			noise_vector = 1 + np.random.normal(0, noise, X_test.shape)/100
 
+			X_test_noisy = np.multiply(X_test, noise_vector)
 
+			y_pred_test_noisy = model.predict(X_test_noisy)
 
+			all_samples.append([noise,
+								accuracy_score(Y_test, y_pred_test_noisy),
+								f1_score(Y_test, y_pred_test_noisy)])
 
-
-	# for noise in range(0, 1, 2, 5, 10, 15, 20):
-
-		# ADD noise to X_test
-		# Find the metrics of the noisy test set
-
-	# Save the report as a csv file
+		noisy_reults = pd.DataFrame(all_samples, columns = ['noise','acc','f1'])	
+		noisy_reults.to_csv(report_directory + "/" + f'{model_name}-LeakLocs-noise.csv',
+						index=False)

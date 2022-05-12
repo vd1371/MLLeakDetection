@@ -19,6 +19,7 @@ def report_accuracy_of_solutions(df, **params):
 
     y_true = []
     y_pred = []
+
     for i in range(n_sections):
 
     	y_true.append(df[f'Actual-{i}'])
