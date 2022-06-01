@@ -3,6 +3,8 @@ from ._load_data_for_optimization import _load_data_for_optimization
 from .BaseOptimizer import BaseOptimizer
 from ._optimize import optimize
 
+import time
+
 class Optimizer(BaseOptimizer):
 
 	def __init__(self, **params):
@@ -17,4 +19,8 @@ class Optimizer(BaseOptimizer):
 		self.size_binary_length = 10
 
 	def optimize(self):
+		start = time.time()
+		
 		optimize(**self.__dict__)
+
+		print (time.time() - start)

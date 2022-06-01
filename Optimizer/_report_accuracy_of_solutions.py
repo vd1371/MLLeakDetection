@@ -19,7 +19,6 @@ def report_accuracy_of_solutions(df, **params):
 
     y_true = []
     y_pred = []
-
     for i in range(n_sections):
 
     	y_true.append(df[f'Actual-{i}'])
@@ -46,8 +45,8 @@ def report_accuracy_of_solutions(df, **params):
     y_pred = []
     for i in range(max_n_leaks):
 
-        y_true.append(df[f'CdAl{i}-act'])
-        y_pred.append(df[f'CdAl{i}-pred'])
+        y_true.append(df[f'CdAl{i}-act'][df[f'CdAl{i}-act'] > 0])
+        y_pred.append(df[f'CdAl{i}-pred'][df[f'CdAl{i}-pred'] > 0])
 
     y_true = list(itertools.chain(*y_true))
     y_pred = list(itertools.chain(*y_pred))

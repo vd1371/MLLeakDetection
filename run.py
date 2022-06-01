@@ -3,7 +3,7 @@ import os
 from LeakDataGenerator import *
 # from MLModels import DNNLeakDetector
 # from MLModels import RFLeakDetector
-from MLModels import CatBoostLeakDetector
+# from MLModels import CatBoostLeakDetector
 from Optimizer import Optimizer
 
 
@@ -18,8 +18,8 @@ def run():
 
 	general_settings = {
 	  'data_directory' : './Data/',
-	  # 'leak_pred': 'LeakLocs',
-	  'leak_pred': 'LeakSize',
+	  'leak_pred': 'LeakLocs',
+	  # 'leak_pred': 'LeakSize',
 	  'starting_batch' : 0,
 	  "noises":[1,2,5,10,15,20],
 	  'n_batches' : 1,
@@ -107,11 +107,11 @@ def run():
 	# myCatBoostLeakDetector.run()
 
 	# Step 5: Optimze
-	GA_settings = {	'n_samples': 20,
+	GA_settings = {	'n_samples': 12,
 					'crossver_prob': 0.75,
-					'mutation_prob' : 0.1,
-					'population_size' : 10,
-					'n_generations' : 5,
+					'mutation_prob' : 0.05,
+					'population_size' : 200,
+					'n_generations' : 5000,
 					'n_elites' : 5,
 					'model_name': "GA",}
 
