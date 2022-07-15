@@ -3,23 +3,20 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.regularizers import l1, l2
+from tensorflow.keras.constraints import NonNeg 
 
-
-def _construct_network( **kwargs):
-	# print(kwargs)
-	# raise ValueError
-	layers = kwargs.get('layers')
-	input_dim = kwargs.get('input_dim')
-	output_dim = kwargs.get('output_dim')
-	input_activation_func = kwargs.get('input_activation_func')
-	hidden_activation_func = kwargs.get('hidden_activation_func')
-	final_activation_func = kwargs.get('final_activation_func')
-	regul_type = kwargs.get('regul_type')
-	act_regul_type = kwargs.get('act_regul_type')
-	reg_param = kwargs.get('reg_param')
-	dropout = kwargs.get('dropout')	
-	loss_func = kwargs.get('loss_func')
-	optimizer = kwargs.get('optimizer')
+def _construct_network( **params):
+	layers = params.get('layers')
+	input_dim = params.get('input_dim')
+	output_dim = params.get('output_dim')
+	input_activation_func = params.get('input_activation_func')
+	hidden_activation_func = params.get('hidden_activation_func')
+	regul_type = params.get('regul_type')
+	act_regul_type = params.get('act_regul_type')
+	reg_param = params.get('reg_param')
+	dropout = params.get('dropout')	
+	optimizer = params.get('optimizer')
+	leak_pred = params.get("leak_pred")
 		
 	l = l2 if regul_type == 'l2' else l1
 	actl = l1 if act_regul_type == 'l1' else l2
@@ -40,11 +37,20 @@ def _construct_network( **kwargs):
 						activity_regularizer = actl(reg_param)))
 		model.add(Dropout(dropout))
 	
-	model.add(Dense(output_dim, activation = final_activation_func))
-	 
-	# Compile model
-	model.compile(loss=loss_func,
-					optimizer=optimizer,
-					metrics = ['accuracy'])
+	if leak_pred == "LeakLocs":
+		model.add(Dense(output_dim, activation = 'softmax'))
+
+	elif leak_pred == "LeakSize":
+		model.add(Dense(output_dim, activation="sigmoid"))
+
+	# Compile models
+	if leak_pred == "LeakLocs":
+		model.compile(loss='binary_crossentropy',
+						optimizer=optimizer,
+						metrics = ['accuracy'])
+
+	elif leak_pred == "LeakSize":
+		model.compile(loss='mean_squared_error',
+						optimizer=optimizer)
 
 	return model

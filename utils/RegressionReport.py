@@ -63,12 +63,19 @@ def evaluate_regression(*args, **params):
 			report.set_index('Ind', inplace=True)
 			report.to_csv(report_directory + "/" + f'{model_name}-{label}.csv')
 
-
-		corcoef_ = CorCoef(y_true, y_pred)
-		r2_ = R2(y_true, y_pred)
-		mse_ = MSE(y_true, y_pred)
-		mae_ = MAE(y_true, y_pred)
-		# mape_ = MAPE(y_true, list(y_pred))
+		if model_name == "DNN":
+			corcoef_ = CorCoef(y_true, np.ravel(y_pred))
+			r2_ = R2(y_true, np.ravel(y_pred))
+			mse_ = MSE(y_true, np.ravel(y_pred))
+			mae_ = MAE(y_true, np.ravel(y_pred))
+			# mape_ = MAPE(y_true, list(np.ravel(y_pred)))
+			
+		else:
+			corcoef_ = CorCoef(y_true, y_pred)
+			r2_ = R2(y_true, y_pred)
+			mse_ = MSE(y_true, y_pred)
+			mae_ = MAE(y_true, y_pred)
+			# mape_ = MAPE(y_true, list(y_pred))
 		
 		# Reporting the quantitative results
 		report_str = f"{label}, CorCoef= {corcoef_:.4f}, "\

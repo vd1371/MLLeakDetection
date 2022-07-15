@@ -3,11 +3,10 @@ from ._construct_network import _construct_network
 
 from utils import Logger
 
-def _construct_model(**kwargs):
+def _construct_model(**params):
 
-	# raise ValueError("To MHK: Please complete this file")
-	warm_up = kwargs.get('warm_up')
-	log = kwargs.get("log")
+	warm_up = params.get('warm_up')
+	log = params.get("log")
 
 	constructed = False
 	if warm_up:
@@ -20,7 +19,7 @@ def _construct_model(**kwargs):
 
 	if not constructed:
 		# Creating the structure of the neural network
-		model = _construct_network(**kwargs)
+		model = _construct_network(**params)
 		
 		# A summary of the model
 		stringlist = []
