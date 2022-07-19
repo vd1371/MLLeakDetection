@@ -1,10 +1,11 @@
 import os
 
 # from LeakDataGenerator import *
-from MLModels import DNNLeakDetector
+# from MLModels import DNNLeakDetector
 # from MLModels import RFLeakDetector
-from MLModels import CatBoostLeakDetector
+# from MLModels import CatBoostLeakDetector
 # from Optimizer import Optimizer
+from utils import leaks_distribution_hist
 
 
 def run():
@@ -33,6 +34,25 @@ def run():
 	  'random_seed' : 42,
 	}
 
+	imbalanced_figure_settings = {
+	"data_directory" : './Data/',
+	"num_hist_bins":2,
+	"color":"Green",
+	"dpi":300,
+	"fig_height": 2,
+	"fig_width": 3,
+	"bar_width": 0.4,
+	"font_size":10,
+	"ticks_font_size":7,
+	"marker_size":0,
+	"line_width":1,
+	"leak_pred":"LeakLocs",
+	'input_dim': 40,
+	'n_sections' : 25,
+	'random_seed' : 42,
+
+	}
+
 	## On the Generator Side
 	# Step 1: Run the generator
 	# generate_data(**{**general_settings,
@@ -44,29 +64,29 @@ def run():
 
 	## On the training side
 	# Step 3: Run the below code
-	DNN_settings = {'layers' : [1000,1000],
-			  'input_activation_func' : 'tanh',
-			  'hidden_activation_func' : 'relu',
-			  'epochs' : 10,
-			  'min_delta' : 0.00001,
-			  'patience' : 10,
-		      'batch_size' : 32,
-			  'should_early_stop' : False,
-			  'should_checkpoint' : False,
-		      'regul_type' : 'l2',
-			  'act_regul_type' : 'l1',
-			  'reg_param' : 0.01,
-			  'dropout' : 0.2,
-			  'optimizer' : 'adam',
-			  'random_state' : 42,
-			  'output_dim' : 1,
-			  'directory' : './Reports/DNN/',
-			  'model_name': "DNN",}
+	# DNN_settings = {'layers' : [1000,1000],
+	# 		  'input_activation_func' : 'tanh',
+	# 		  'hidden_activation_func' : 'relu',
+	# 		  'epochs' : 10,
+	# 		  'min_delta' : 0.00001,
+	# 		  'patience' : 10,
+	# 	      'batch_size' : 32,
+	# 		  'should_early_stop' : False,
+	# 		  'should_checkpoint' : False,
+	# 	      'regul_type' : 'l2',
+	# 		  'act_regul_type' : 'l1',
+	# 		  'reg_param' : 0.01,
+	# 		  'dropout' : 0.2,
+	# 		  'optimizer' : 'adam',
+	# 		  'random_state' : 42,
+	# 		  'output_dim' : 1,
+	# 		  'directory' : './Reports/DNN/',
+	# 		  'model_name': "DNN",}
 
-	myDNNLeakDetector = DNNLeakDetector(**{**DNN_settings,
-											**general_settings})
-	myDNNLeakDetector._construct_model()
-	myDNNLeakDetector.run()
+	# myDNNLeakDetector = DNNLeakDetector(**{**DNN_settings,
+	# 										**general_settings})
+	# myDNNLeakDetector._construct_model()
+	# myDNNLeakDetector.run()
 
 	# Step 4-1: Training random forests
 	# rf_settings = {'n_estimators' : 100,
@@ -118,6 +138,7 @@ def run():
 	# 						**GA_settings})
 	# myOptimizer.optimize()
 
+	leaks_distribution_hist(6, **imbalanced_figure_settings)
 
 
 if __name__ == "__main__":
