@@ -28,10 +28,10 @@ def leaks_distribution_hist(fig_num, **params):
 	plt.clf()
 	plt.figure(figsize= (fig_width, fig_height))
 	plt.xticks(fontsize = ticks_font_size)
-	plt.yticks(np.arange(0,2001,500), fontsize = ticks_font_size)
+	plt.yticks(np.arange(0,4000000,500000), fontsize = ticks_font_size)
 	plt.xlabel('Leaks in Section 2', fontsize = font_size)
 	plt.ylabel('Frequency', fontsize = font_size)
-	plt.ylim([0,2000])
+	plt.ylim([0,4000000])
 	
 	dict_map = {1:'With Leak' , 0:'Without Leak'}
 	Y['LL1'] = Y['LL1'].replace(dict_map)

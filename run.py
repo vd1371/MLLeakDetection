@@ -1,8 +1,8 @@
 import os
 
 # from LeakDataGenerator import *
-# from MLModels import DNNLeakDetector
-# from MLModels import RFLeakDetector
+from MLModels import XGBLeakDetector
+from MLModels.LinearLeakDetector import LinearLeakDetector
 # from MLModels import CatBoostLeakDetector
 # from Optimizer import Optimizer
 from utils import leaks_distribution_hist
@@ -19,8 +19,8 @@ def run():
 
 	general_settings = {
 	  'data_directory' : './Data/',
-	  # 'leak_pred': 'LeakLocs',
 	  'leak_pred': 'LeakSize',
+	#   'leak_pred': 'LeakSize',
 	  'starting_batch' : 0,
 	  # "noises":[1,2,5,10,15,20],
 	  'n_batches' : 1,
@@ -64,10 +64,10 @@ def run():
 
 	## On the training side
 	# Step 3: Run the below code
-	# DNN_settings = {'layers' : [1000,1000],
+	# DNN_settings = {'layers' : [120,120, 120],
 	# 		  'input_activation_func' : 'tanh',
 	# 		  'hidden_activation_func' : 'relu',
-	# 		  'epochs' : 10,
+	# 		  'epochs' : 200,
 	# 		  'min_delta' : 0.00001,
 	# 		  'patience' : 10,
 	# 	      'batch_size' : 32,
@@ -76,7 +76,7 @@ def run():
 	# 	      'regul_type' : 'l2',
 	# 		  'act_regul_type' : 'l1',
 	# 		  'reg_param' : 0.01,
-	# 		  'dropout' : 0.2,
+	# 		  'dropout' : 0.0,
 	# 		  'optimizer' : 'adam',
 	# 		  'random_state' : 42,
 	# 		  'output_dim' : 1,
@@ -88,20 +88,24 @@ def run():
 	# myDNNLeakDetector._construct_model()
 	# myDNNLeakDetector.run()
 
-	# Step 4-1: Training random forests
-	# rf_settings = {'n_estimators' : 100,
-	# 				'max_depth' : 200,
-	# 				'min_samples_split' : 2,
-	# 				'min_samples_leaf' : 1,
-	# 				'max_features' : 'auto',
-	# 				'should_cross_val' : False,
+	# Step 4-1: Training XGB
+	# XGB_settings = {'n_estimators' : 1000,
+	# 				'learning_rate' : 0.3,
+	# 				'max_depth' : 6,
 	# 				'n_jobs' : -1,
-					# 'model_name': "RF",}
+	# 				'reg_alpha': 0.001,
+	# 				'model_name': "XGB"}
 
-	# myRFLeakDetector = RFLeakDetector(**{**rf_settings,
+	# myXGBLeakDetector = XGBLeakDetector(**{**XGB_settings,
 	# 									 **general_settings})
-	# myRFLeakDetector._construct_model()
-	# myRFLeakDetector.run()
+	# myXGBLeakDetector._construct_model()
+	# myXGBLeakDetector.run()
+
+	linear_settings = {'model_name': "Linear"}
+	myLinearModel = LinearLeakDetector(**{**linear_settings,
+										 **general_settings})
+	myLinearModel._construct_model()
+	myLinearModel.run()
 
 	# Step 4-2: Training catboost
 	# cb_settings = {'iterations' : 100,
@@ -138,7 +142,7 @@ def run():
 	# 						**GA_settings})
 	# myOptimizer.optimize()
 
-	leaks_distribution_hist(6, **imbalanced_figure_settings)
+	# leaks_distribution_hist(6, **imbalanced_figure_settings)
 
 
 if __name__ == "__main__":
